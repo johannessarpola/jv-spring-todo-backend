@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>Insert title here</title>
+</head>
+<body>
+<section>
+<h1>I'm kistring</h1>
+    <li th:each="i : ${stuff}">
+        <span th:text="${i}">hello world!</span>
+    </li>
+
+</section>
+</body>
+</html>
