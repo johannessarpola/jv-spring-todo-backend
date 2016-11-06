@@ -7,11 +7,15 @@ import java.util.Arrays;
 import org.springframework.stereotype.Service;
 
 @Service
-public class BigMathService {
+public class BigMathService implements MathService {
 
 	public BigMathService() {
 	}
 	
+	/* (non-Javadoc)
+	 * @see fi.johannes.services.MathService#sum(java.math.BigInteger[])
+	 */
+	@Override
 	public BigInteger sum(BigInteger[] bigints){
 		BigInteger sum = BigInteger.valueOf(0L);
 		for(BigInteger bigint : bigints) {
@@ -20,6 +24,10 @@ public class BigMathService {
 		return sum;
 	}
 	
+	/* (non-Javadoc)
+	 * @see fi.johannes.services.MathService#mean(java.math.BigInteger[])
+	 */
+	@Override
 	public BigDecimal mean(BigInteger[] bigints){
 		BigDecimal avg = new BigDecimal("0");
 		for(BigInteger bigint : bigints) {
@@ -29,6 +37,10 @@ public class BigMathService {
 		return avg.divide(divider);
 	}
 	
+	/* (non-Javadoc)
+	 * @see fi.johannes.services.MathService#median(java.math.BigInteger[])
+	 */
+	@Override
 	public BigDecimal median(BigInteger[] bigints) {
 		BigDecimal median = new BigDecimal("0");
 		Arrays.sort(bigints);
