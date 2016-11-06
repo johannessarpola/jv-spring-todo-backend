@@ -12,7 +12,7 @@ public class BigMathServiceTest {
 	@Test
 	public void test() {
 		BigInteger[] bigints = {new BigInteger("10"), new BigInteger("100"), new BigInteger("1000")}; 
-		BigMathService service = new BigMathService();
+		MathService service = new BigMathService();
 		BigDecimal avg = service.mean(bigints);
 		BigDecimal median = service.median(bigints);
 		BigInteger total = service.sum(bigints);

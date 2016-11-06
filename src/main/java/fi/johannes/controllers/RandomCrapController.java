@@ -16,7 +16,6 @@ public class RandomCrapController {
 	@RequestMapping("/rand/string100")
 	public String randomString(){
 		// TODO Should be inside service
-		int i =0;
 		log.info("Requested random string");
 		return StringGen.randomAlphaNumericString(100);
 	}
