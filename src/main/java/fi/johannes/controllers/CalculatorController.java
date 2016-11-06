@@ -18,6 +18,9 @@ import fi.johannes.services.MathService;
 @Controller
 public class CalculatorController {
 	
+	// TODO Manage this as a backend (RestController) which will be used from another service as a 
+	// engine to do calculation as purpose is not to return templates if there is calculation engine.
+	
 	@Autowired
 	MathService mathService;
 	
