@@ -26,10 +26,7 @@ public class CalculatorController {
 	String sum(@RequestBody MathOperationData body, Model model) {
 		BigInteger[] bigints = conversionService.StringsToBigInts(body.getNumbers());
 		BigInteger result = mathService.sum(bigints);
-		model.addAttribute("Result", result.toString());
-		return "resul";
-		
-		
-		
+		model.addAttribute("CalculationResult", result.toString());
+		return "results";
 	}
 }
