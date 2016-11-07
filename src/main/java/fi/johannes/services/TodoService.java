@@ -1,5 +1,6 @@
 package fi.johannes.services;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,18 +10,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fi.johannes.dao.ITodoDao;
+import fi.johannes.dao.IUserDao;
 
 @Service
-public class TodoService {
+public class TodoService implements ITodoService {
 	private final Logger log = LoggerFactory.getLogger(getClass());
 	
 	@Autowired
 	ITodoDao tododao;
 	
-	public Todo store(Todo todo) {
-		tododao.save(todo);
-		return tododao.findOne(todo.getId());
+	@Autowired
+	IUserDao userdao;
+	
+	/* (non-Javadoc)
+	 * @see fi.johannes.services.ITodoService#store(fi.johannes.services.Todo)
+	 */
+	@Override
+	public Todo store(TodoDto todo) {
+		Todo todoEnt = dtoToEnt(todo);
+		userdao.save(todoEnt.getCreator());
+		tododao.save(todoEnt);
+		return tododao.findOne(todoEnt.getId());
 	}
+	/* (non-Javadoc)
+	 * @see fi.johannes.services.ITodoService#todosForUser(fi.johannes.services.User)
+	 */
+	@Override
 	public List<Todo> todosForUser(User user) {
 		List<Todo> todos = tododao.findByCreator(user);
 		if(todos == null || todos.isEmpty()) {
@@ -30,7 +45,23 @@ public class TodoService {
 		else {
 			return todos;
 		}
-		
 	}
-	
+	/* (non-Javadoc)
+	 * @see fi.johannes.services.ITodoService#allTodos()
+	 */
+	@Override
+	public List<Todo> allTodos(){
+		return (List<Todo>) tododao.findAll();
+	}
+	private Todo dtoToEnt(TodoDto dto) {
+		Todo ent = new Todo();
+		// FIXME To userdao search
+		ent.setCreator(Mockup.createUser());
+		// FIXME Actual date from string
+		ent.setDeadline(LocalDateTime.now());
+		ent.setDone(dto.getDone());
+		ent.setEntry(dto.getEntry());
+		return ent;
+	}
+	// TODO Removal
 }
