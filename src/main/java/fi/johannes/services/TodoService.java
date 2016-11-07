@@ -11,6 +11,10 @@ import org.springframework.stereotype.Service;
 
 import fi.johannes.dao.ITodoDao;
 import fi.johannes.dao.IUserDao;
+import fi.johannes.dto.TodoDto;
+import fi.johannes.entity.Todo;
+import fi.johannes.entity.User;
+import fi.johannes.misc.Mockup;
 
 @Service
 public class TodoService implements ITodoService {
