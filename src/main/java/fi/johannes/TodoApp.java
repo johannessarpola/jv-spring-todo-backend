@@ -7,10 +7,10 @@ import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
-public class MoocDemoiluApplication {
+public class TodoApp {
 
 	public static void main(String[] args) {
-		SpringApplication.run(MoocDemoiluApplication.class, args);
+		SpringApplication.run(TodoApp.class, args);
 	}
 	
 	@Bean
