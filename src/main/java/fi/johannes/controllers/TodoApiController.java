@@ -34,8 +34,19 @@ public class TodoApiController {
 	}
 	
 	@RequestMapping(path="/getTodos", method=RequestMethod.POST) 
-	public List<Todo> getTodos(@RequestParam(name="num", defaultValue=10+"", required=false) Integer number){
+	public List<Todo> getToDueToday(@RequestParam(name="num", defaultValue=10+"", required=false) Integer number){
+		return todoService.getTodoDueToday();
+	}
+	
+	@RequestMapping(path="/currentWeek", method=RequestMethod.POST) 
+	public List<Todo> getToDueCurrentWeek(@RequestParam(name="num", defaultValue=10+"", required=false) Integer number){
+		return todoService.getTodoDueCurrentWeek();
 		
-		return null;
+	}
+	
+	@RequestMapping(path="/todos", method=RequestMethod.POST) 
+	public List<Todo> getTodos(@RequestParam(name="num", defaultValue=10+"", required=false) Integer number){
+		return todoService.getLatest(number);
+		
 	}
 }

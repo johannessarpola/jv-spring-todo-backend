@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -26,7 +27,16 @@ public class Todo {
 	LocalDateTime created;
 	LocalDateTime deadline;
 	Boolean done;
-
+	
+	@OneToMany
+	Keywords keywords;
+	
+	public Keywords getKeywords() {
+		return keywords;
+	}
+	public void setKeywords(Keywords keywords) {
+		this.keywords = keywords;
+	}
 	public Todo() {
 		created = LocalDateTime.now();
 	}
@@ -60,5 +70,8 @@ public class Todo {
 	}
 	public void setDone(Boolean done) {
 		this.done = done;
+	}
+	public void addKeyword(String kw){
+		keywords.add(kw);
 	}
 }
