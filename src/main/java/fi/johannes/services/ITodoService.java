@@ -13,6 +13,7 @@ public interface ITodoService {
 	List<Todo> todosForUser(User user);
 
 	List<Todo> allTodos();
-	// TODO Removal
+
+	List<Todo> getTodoDueCurrentWeek();
 
 }

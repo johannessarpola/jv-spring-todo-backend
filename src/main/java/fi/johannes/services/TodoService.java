@@ -7,6 +7,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 import fi.johannes.dao.ITodoDao;
@@ -15,6 +16,7 @@ import fi.johannes.dto.TodoDto;
 import fi.johannes.entity.Todo;
 import fi.johannes.entity.User;
 import fi.johannes.misc.Mockup;
+import fi.johannes.util.DateUtils;
 
 @Service
 public class TodoService implements ITodoService {
@@ -57,6 +59,19 @@ public class TodoService implements ITodoService {
 	public List<Todo> allTodos(){
 		return (List<Todo>) tododao.findAll();
 	}
+	
+	public List<Todo> getLatest(Integer number){
+		long lastid = tododao.count();
+		long neg = lastid - number.longValue();
+		List<Todo> todos = tododao.findByIdGreaterThanEqual(neg);
+		return todos;
+	}
+	@Override
+	public List<Todo> getTodoDueCurrentWeek(){
+		Pair<LocalDateTime, LocalDateTime> week= DateUtils.getCurrentWeek();
+		List<Todo> toDue = tododao.findByDeadlineBetween(week.getFirst(), week.getSecond());
+		return toDue;
+	}
 	private Todo dtoToEnt(TodoDto dto) {
 		Todo ent = new Todo();
 		// FIXME To userdao search
@@ -67,5 +82,7 @@ public class TodoService implements ITodoService {
 		ent.setEntry(dto.getEntry());
 		return ent;
 	}
+	
+	
 	// TODO Removal
 }
