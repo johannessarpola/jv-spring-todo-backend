@@ -16,4 +16,8 @@ public interface ITodoService {
 
 	List<Todo> getTodoDueCurrentWeek();
 
+	List<Todo> getLatest(Integer number);
+
+	List<Todo> getTodoDueToday();
+
 }

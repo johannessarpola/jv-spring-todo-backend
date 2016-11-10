@@ -59,19 +59,27 @@ public class TodoService implements ITodoService {
 	public List<Todo> allTodos(){
 		return (List<Todo>) tododao.findAll();
 	}
-	
+	@Override
 	public List<Todo> getLatest(Integer number){
 		long lastid = tododao.count();
 		long neg = lastid - number.longValue();
 		List<Todo> todos = tododao.findByIdGreaterThanEqual(neg);
 		return todos;
 	}
+	
+	@Override
+	public List<Todo> getTodoDueToday(){
+		List<Todo> toDue = tododao.findByDeadline(LocalDateTime.now());
+		return toDue;
+	}
+	
 	@Override
 	public List<Todo> getTodoDueCurrentWeek(){
 		Pair<LocalDateTime, LocalDateTime> week= DateUtils.getCurrentWeek();
 		List<Todo> toDue = tododao.findByDeadlineBetween(week.getFirst(), week.getSecond());
 		return toDue;
 	}
+	
 	private Todo dtoToEnt(TodoDto dto) {
 		Todo ent = new Todo();
 		// FIXME To userdao search
