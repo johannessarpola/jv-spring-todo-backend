@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import fi.johannes.dto.TodoDto;
 import fi.johannes.entity.Todo;
+import fi.johannes.randombeans.MockTodo;
 import fi.johannes.services.ITodoService;
 
 @RestController
@@ -38,15 +39,35 @@ public class TodoApiController {
 		return todoService.getTodoDueToday();
 	}
 	
-	@RequestMapping(path="/currentWeek", method=RequestMethod.POST) 
+	@RequestMapping(path="/currentWeek", method=RequestMethod.GET) 
 	public List<Todo> getToDueCurrentWeek(@RequestParam(name="num", defaultValue=10+"", required=false) Integer number){
 		return todoService.getTodoDueCurrentWeek();
-		
 	}
 	
 	@RequestMapping(path="/todos", method=RequestMethod.POST) 
 	public List<Todo> getTodos(@RequestParam(name="num", defaultValue=10+"", required=false) Integer number){
-		return todoService.getLatest(number);
-		
+		return todoService.getLatest(number);	
 	}
+	@RequestMapping(path="/all", method=RequestMethod.GET)
+	public List<Todo> getTodos(){
+		return todoService.allTodos();
+	}
+	@RequestMapping(path="/update", method=RequestMethod.POST)
+	public Todo update(@RequestBody Todo todo){
+		Todo updated = todoService.update(todo);
+		return updated;
+	}
+	
+	@RequestMapping(path="/mockups")
+	List<Todo> mocking(){
+		// TODO Move to tests
+		for(int i=0; i<10; i++){
+			Todo td = MockTodo.giveOne();
+			td.getCreator();
+			td.setKeywords(null);
+			todoService.storeTodo(td);
+		}
+		return todoService.allTodos();
+	}
+	
 }

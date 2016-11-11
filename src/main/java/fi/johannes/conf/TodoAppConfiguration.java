@@ -1,4 +1,4 @@
-package fi.johannes;
+package fi.johannes.conf;
 
 import java.time.LocalDateTime;
 
