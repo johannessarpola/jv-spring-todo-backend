@@ -15,4 +15,5 @@ public interface ITodoDao extends CrudRepository<Todo, Long> {
 	public List<Todo> findByDeadline(LocalDateTime deadline);
 	public List<Todo> findByDeadlineBetween(LocalDateTime start, LocalDateTime end);
 	public List<Todo> findByIdGreaterThanEqual(long id);
+	public Todo findById(long id);
 }
