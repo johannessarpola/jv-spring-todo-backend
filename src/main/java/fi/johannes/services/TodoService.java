@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import fi.johannes.dao.ITodoDao;
 import fi.johannes.dao.IUserDao;
 import fi.johannes.dto.TodoDto;
+import fi.johannes.dto.UserDto;
 import fi.johannes.entity.Todo;
 import fi.johannes.entity.User;
 import fi.johannes.misc.Mockup;
@@ -32,11 +33,24 @@ public class TodoService implements ITodoService {
 	 * @see fi.johannes.services.ITodoService#store(fi.johannes.services.Todo)
 	 */
 	@Override
+	@Deprecated
 	public Todo store(TodoDto todo) {
 		Todo todoEnt = dtoToEnt(todo);
 		userdao.save(todoEnt.getCreator());
 		tododao.save(todoEnt);
 		return tododao.findOne(todoEnt.getId());
+	}
+	@Override
+	public  Todo storeTodo(Todo todo){
+		User u =todo.getCreator();
+		if(userdao.findById(u.getId()) == null) {
+			u = userdao.save(u);	
+		}
+		todo.setCreator(u);
+		if(tododao.findById(todo.getId()) == null){
+			return tododao.save(todo);
+		}
+		else return null;
 	}
 	/* (non-Javadoc)
 	 * @see fi.johannes.services.ITodoService#todosForUser(fi.johannes.services.User)
@@ -91,6 +105,30 @@ public class TodoService implements ITodoService {
 		return ent;
 	}
 	
-	
-	// TODO Removal
+	private TodoDto entToDto(Todo todo){
+		TodoDto todoDto = new TodoDto();
+		todoDto.setCreated(DateUtils.localDateTimeToString(todo.getCreated()));
+		todoDto.setDeadline(DateUtils.localDateTimeToString(todo.getDeadline()));
+		todoDto.setDone(todo.getDone());
+		todoDto.setEntry(todo.getEntry());
+		User user = todo.getCreator();
+		todoDto.setCreator(uEntToDto(user));
+		return todoDto;
+	}
+	// TODO converters to separate class
+	private UserDto uEntToDto(User user){
+		UserDto udt = new UserDto();
+		udt.setLogin(user.getLogin());
+		udt.setName(user.getName());
+		return udt;
+	}
+	@Override
+	public Todo update(Todo todo) {
+		if(tododao.findById(todo.getId()) != null) {
+			return tododao.save(todo);
+		}
+		else {
+			return null;
+		}
+	}
 }

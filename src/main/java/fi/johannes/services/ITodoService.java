@@ -20,4 +20,8 @@ public interface ITodoService {
 
 	List<Todo> getTodoDueToday();
 
+	Todo storeTodo(Todo todo);
+
+	Todo update(Todo todo);
+
 }
