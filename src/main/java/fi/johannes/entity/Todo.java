@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -23,12 +23,11 @@ public class Todo {
 	User creator;
 	
 	String entry;
-	// FIXME LocalDateTime gets saved in serialized format, which works for json but is quite ugly in db
 	LocalDateTime created;
 	LocalDateTime deadline;
 	Boolean done;
 	
-	@OneToMany
+	@OneToOne
 	Keywords keywords;
 	
 	public Keywords getKeywords() {

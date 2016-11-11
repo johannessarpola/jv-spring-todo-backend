@@ -1,24 +1,33 @@
 package fi.johannes.entity;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+@Entity
 public class Keywords {
 
-	@ManyToOne
+	@OneToOne
 	Todo parent;
+	
 	@Id
+	@JsonIgnore
 	@GeneratedValue
 	long id;
 	// TODO This could be designed to use less of a memory footprint by storing strings to separate
 	// table and link ids of todo and the stirng in a separate entity
-	List<String> keywords;
+	@ElementCollection
+	Set<String> keywords;
+	
 	public Keywords() {
-		keywords = new ArrayList<>();
+		keywords = new HashSet<>();
 	}
 	public Todo getTodo() {
 		return parent;
@@ -26,10 +35,10 @@ public class Keywords {
 	public void setTodo(Todo todo) {
 		this.parent = todo;
 	}
-	public List<String> getKeywords() {
+	public Set<String> getKeywords() {
 		return keywords;
 	}
-	public void setKeywords(List<String> keywords) {
+	public void setKeywords(Set<String> keywords) {
 		this.keywords = keywords;
 	}
 	public void add(String kw) {

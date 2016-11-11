@@ -12,11 +12,11 @@ public class User {
 	@Id
 	@GeneratedValue
 	@JsonIgnore
-	long id;
+	private Long id;
 	
-	String login;
-	String name;
-	String email;
+	private String login;
+	private String name;
+	private String email;
 	
 	public User() {
 	}
@@ -40,6 +40,9 @@ public class User {
 	}
 	public long getId() {
 		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 	
