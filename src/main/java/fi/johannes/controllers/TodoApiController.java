@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import fi.johannes.dto.TodoDto;
 import fi.johannes.entity.Todo;
+import fi.johannes.entity.User;
 import fi.johannes.randombeans.MockTodo;
 import fi.johannes.services.ITodoService;
 
@@ -21,6 +22,9 @@ public class TodoApiController {
 	
 	@Autowired
 	ITodoService todoService;
+	
+	// TODO This needs to be stored somewhere
+	private User user;
 	
 	@RequestMapping(path="/store", method=RequestMethod.POST)
 	public ResponseEntity<Todo> storeTodo(@RequestBody TodoDto todo){
@@ -36,17 +40,17 @@ public class TodoApiController {
 	
 	@RequestMapping(path="/getTodos", method=RequestMethod.POST) 
 	public List<Todo> getToDueToday(@RequestParam(name="num", defaultValue=10+"", required=false) Integer number){
-		return todoService.getTodoDueToday();
+		return todoService.getTodoDueToday(user);
 	}
 	
 	@RequestMapping(path="/currentWeek", method=RequestMethod.GET) 
 	public List<Todo> getToDueCurrentWeek(@RequestParam(name="num", defaultValue=10+"", required=false) Integer number){
-		return todoService.getTodoDueCurrentWeek();
+		return todoService.getTodoDueCurrentWeek(user);
 	}
 	
 	@RequestMapping(path="/todos", method=RequestMethod.POST) 
 	public List<Todo> getTodos(@RequestParam(name="num", defaultValue=10+"", required=false) Integer number){
-		return todoService.getLatest(number);	
+		return todoService.getLatest(number, user);	
 	}
 	@RequestMapping(path="/all", method=RequestMethod.GET)
 	public List<Todo> getTodos(){
