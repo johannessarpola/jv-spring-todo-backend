@@ -14,11 +14,11 @@ public interface ITodoService {
 
 	List<Todo> allTodos();
 
-	List<Todo> getTodoDueCurrentWeek();
+	List<Todo> getTodoDueCurrentWeek(User user);
 
-	List<Todo> getLatest(Integer number);
+	List<Todo> getLatest(Integer number, User user);
 
-	List<Todo> getTodoDueToday();
+	List<Todo> getTodoDueToday(User user);
 
 	Todo storeTodo(Todo todo);
 

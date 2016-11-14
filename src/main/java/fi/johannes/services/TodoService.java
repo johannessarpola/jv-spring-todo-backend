@@ -74,23 +74,23 @@ public class TodoService implements ITodoService {
 		return (List<Todo>) tododao.findAll();
 	}
 	@Override
-	public List<Todo> getLatest(Integer number){
+	public List<Todo> getLatest(Integer number, User user){
 		long lastid = tododao.count();
 		long neg = lastid - number.longValue();
-		List<Todo> todos = tododao.findByIdGreaterThanEqual(neg);
+		List<Todo> todos = tododao.findByIdGreaterThanEqual(neg, user);
 		return todos;
 	}
 	
 	@Override
-	public List<Todo> getTodoDueToday(){
-		List<Todo> toDue = tododao.findByDeadline(LocalDateTime.now());
+	public List<Todo> getTodoDueToday(User user){
+		List<Todo> toDue = tododao.findByDeadline(LocalDateTime.now(), user);
 		return toDue;
 	}
 	
 	@Override
-	public List<Todo> getTodoDueCurrentWeek(){
+	public List<Todo> getTodoDueCurrentWeek(User user){
 		Pair<LocalDateTime, LocalDateTime> week= DateUtils.getCurrentWeek();
-		List<Todo> toDue = tododao.findByDeadlineBetween(week.getFirst(), week.getSecond());
+		List<Todo> toDue = tododao.findByDeadlineBetween(week.getFirst(), week.getSecond(), user);
 		return toDue;
 	}
 	

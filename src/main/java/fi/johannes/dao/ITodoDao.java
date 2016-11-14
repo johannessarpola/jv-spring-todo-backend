@@ -12,8 +12,8 @@ public interface ITodoDao extends CrudRepository<Todo, Long> {
 
 	// Pretty fancy
 	public List<Todo> findByCreator(User user);
-	public List<Todo> findByDeadline(LocalDateTime deadline);
-	public List<Todo> findByDeadlineBetween(LocalDateTime start, LocalDateTime end);
-	public List<Todo> findByIdGreaterThanEqual(long id);
+	public List<Todo> findByDeadline(LocalDateTime deadline, User user);
+	public List<Todo> findByDeadlineBetween(LocalDateTime start, LocalDateTime end, User user);
+	public List<Todo> findByIdGreaterThanEqual(long id, User user);
 	public Todo findById(long id);
 }

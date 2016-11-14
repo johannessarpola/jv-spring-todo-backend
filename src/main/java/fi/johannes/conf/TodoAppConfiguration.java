@@ -15,6 +15,7 @@ public class TodoAppConfiguration {
 	@Bean
 	public Jackson2ObjectMapperBuilder jacksonBuilder() {
 		return new Jackson2ObjectMapperBuilder()
+				// Custom serializers for LocalDateTime
 				.serializerByType(LocalDateTime.class, new LocalDateTimeSerializer())
 				.deserializerByType(LocalDateTime.class, new LocalDateTimeDeserializer());
 	}
