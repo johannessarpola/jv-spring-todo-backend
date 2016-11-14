@@ -3,7 +3,7 @@ package fi.johannes.dto;
 public class TodoDto {
 	
 
-	String creatorEmail;
+	UserDto creator;
 	
 	String entry;
 	String created;
@@ -13,12 +13,12 @@ public class TodoDto {
 	public TodoDto() {
 	}
 
-	public String getCreatorEmail() {
-		return creatorEmail;
+	public UserDto getCreatorEmail() {
+		return creator;
 	}
 
-	public void setCreatorEmail(String creatorEmail) {
-		this.creatorEmail = creatorEmail;
+	public void setCreator(UserDto creator) {
+		this.creator = creator;
 	}
 
 	public String getEntry() {
