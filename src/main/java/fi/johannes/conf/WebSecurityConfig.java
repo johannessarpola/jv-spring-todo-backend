@@ -31,6 +31,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		auth
 			.ldapAuthentication()
+				.userDnPatterns("uid={0},ou=people")
+				.groupSearchBase("ou=groups")
+					.contextSource()
+						.ldif("classpath:test-server.ldif");
+		auth
+			.ldapAuthentication()
 				//.userDnPatterns("uid={0},ou=people")
 				//.groupSearchBase("ou=groups")
 				.userSearchFilter("uid={0}")
@@ -42,5 +48,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 					.url("ldap://ldap.forumsys.com:389/dc=example,dc=com")
 						.managerDn("cn=read-only-admin,dc=example,dc=com")
 						.managerPassword("password");
+			
 	}
 }
