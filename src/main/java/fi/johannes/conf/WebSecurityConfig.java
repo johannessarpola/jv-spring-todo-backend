@@ -18,10 +18,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.anyRequest().fullyAuthenticated()
 				.and()
 			.formLogin()
+				.loginPage("/login")
+				.permitAll()
+				.defaultSuccessUrl("/")
 			.and()
-		    	.logout()
-		    	.logoutSuccessUrl("/login/success");
-			;
+				.logout()                                    
+				.permitAll();
 	}
 
 	@Autowired
