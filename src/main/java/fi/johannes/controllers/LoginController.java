@@ -13,4 +13,12 @@ public class LoginController {
 	String loginPage(){
 		return "login";
 	}
+	@RequestMapping(path="/success", method=RequestMethod.GET)
+	String success(){
+		return "success";
+	}
+	@RequestMapping(path="/logout", method=RequestMethod.GET)
+	String logout(){
+		return "logout";
+	}
 }
