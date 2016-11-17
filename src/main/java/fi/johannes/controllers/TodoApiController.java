@@ -1,9 +1,12 @@
 package fi.johannes.controllers;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.ldap.userdetails.Person;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -61,7 +64,13 @@ public class TodoApiController {
 		Todo updated = todoService.update(todo);
 		return updated;
 	}
-	
+
+	@RequestMapping(path="/user", method = RequestMethod.GET)
+	Person getUser(){
+		Person user = (Person) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return user;
+	}
+
 	@RequestMapping(path="/mockups")
 	List<Todo> mocking(){
 		// TODO Move to tests

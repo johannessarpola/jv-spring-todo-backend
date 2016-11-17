@@ -82,9 +82,13 @@
 			<artifactId>random-beans</artifactId>
 			<version>3.3.0</version>
 		</dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
 
 
-	</dependencies>
+    </dependencies>
 
 	<build>
 		<plugins>
