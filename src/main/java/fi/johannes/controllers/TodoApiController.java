@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.ldap.userdetails.Person;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -66,8 +67,8 @@ public class TodoApiController {
 	}
 
 	@RequestMapping(path="/user", method = RequestMethod.GET)
-	Person getUser(){
-		Person user = (Person) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	UserDetails getUser(){
+		UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return user;
 	}
 
