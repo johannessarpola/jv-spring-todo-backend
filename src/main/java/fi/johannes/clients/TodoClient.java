@@ -4,6 +4,7 @@ import fi.johannes.entity.Todo;
 import fi.johannes.entity.Todos;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
  * Created by johanness on 18/11/2016.
  */
 
+@Component
 public class TodoClient {
 
     @Value("${backend.url}")
