@@ -23,6 +23,7 @@ public class Todo {
 	User creator;
 	
 	String entry;
+	// TODO What happens if date is faulty ??
 	LocalDateTime created;
 	LocalDateTime deadline;
 	Boolean done;
