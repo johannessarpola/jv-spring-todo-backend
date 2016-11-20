@@ -21,4 +21,8 @@ public class TodoApp {
 	    registration.addUrlMappings("/console/*");
 	    return registration;
 	}
+	@Bean
+	public void populateDb(){
+
+	}
 }

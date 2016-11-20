@@ -21,7 +21,7 @@ import fi.johannes.randombeans.MockTodo;
 import fi.johannes.services.ITodoService;
 
 @RestController
-@RequestMapping(path="/todo")
+@RequestMapping(path="/todos/api")
 public class TodoApiController {
 	
 	@Autowired
@@ -47,7 +47,7 @@ public class TodoApiController {
 		return todoService.getTodoDueToday(user);
 	}
 	
-	@RequestMapping(path="/currentWeek", method=RequestMethod.GET) 
+	@RequestMapping(path="/currentWeek", method=RequestMethod.GET)
 	public List<Todo> getToDueCurrentWeek(@RequestParam(name="num", defaultValue=10+"", required=false) Integer number){
 		return todoService.getTodoDueCurrentWeek(user);
 	}
@@ -60,6 +60,7 @@ public class TodoApiController {
 	public List<Todo> getTodos(){
 		return todoService.allTodos();
 	}
+
 	@RequestMapping(path="/update", method=RequestMethod.POST)
 	public Todo update(@RequestBody Todo todo){
 		Todo updated = todoService.update(todo);
