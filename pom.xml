@@ -82,13 +82,17 @@
 			<artifactId>random-beans</artifactId>
 			<version>3.3.0</version>
 		</dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-java8</artifactId>
+			<version>5.1.0.Final</version><!--$NO-MVN-MAN-VER$-->
+		</dependency>
 
-
-    </dependencies>
+	</dependencies>
 
 	<build>
 		<plugins>
