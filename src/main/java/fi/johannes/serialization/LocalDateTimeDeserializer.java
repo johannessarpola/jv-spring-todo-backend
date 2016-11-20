@@ -7,14 +7,14 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonNode;
+
+import fi.johannes.util.DateUtils;
 
 public class LocalDateTimeDeserializer extends JsonDeserializer<LocalDateTime> {
 	@Override
 	public LocalDateTime deserialize(JsonParser jp, DeserializationContext ctxt)
 			throws IOException, JsonProcessingException {
-		JsonNode node = jp.getCodec().readTree(jp);
-		// FIXME Need to think this through, should be for the whole Todo
-		return null;
+		String text = jp.getText();
+		return DateUtils.stringToLocalDateTime(text);
 	}
 }
