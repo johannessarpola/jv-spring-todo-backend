@@ -30,8 +30,19 @@ public class TodoApiController {
 	// TODO This needs to be stored somewhere
 	private User user;
 	
-	@RequestMapping(path="/store", method=RequestMethod.POST)
+	@RequestMapping(path="/storeDto", method=RequestMethod.POST)
 	public ResponseEntity<Todo> storeTodo(@RequestBody TodoDto todo){
+		// TODO Authentication
+		if(todo != null) {
+			Todo stored = todoService.store(todo);
+			return ResponseEntity.ok(stored);
+		}
+		else {
+			return ResponseEntity.badRequest().body(new Todo());
+		}
+	}
+	@RequestMapping(path="/store", method=RequestMethod.POST)
+	public ResponseEntity<Todo> storeTodo(@RequestBody Todo todo){
 		// TODO Authentication
 		if(todo != null) {
 			Todo stored = todoService.store(todo);
@@ -56,6 +67,7 @@ public class TodoApiController {
 	public List<Todo> getTodos(@RequestParam(name="num", defaultValue=10+"", required=false) Integer number){
 		return todoService.getLatest(number, user);	
 	}
+	
 	@RequestMapping(path="/all", method=RequestMethod.GET)
 	public List<Todo> getTodos(){
 		return todoService.allTodos();
@@ -80,7 +92,7 @@ public class TodoApiController {
 			Todo td = MockTodo.giveOne();
 			td.getCreator();
 			td.setKeywords(null);
-			todoService.storeTodo(td);
+			todoService.store(td);
 		}
 		return todoService.allTodos();
 	}

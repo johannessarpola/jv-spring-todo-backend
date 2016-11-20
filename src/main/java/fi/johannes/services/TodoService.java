@@ -41,17 +41,22 @@ public class TodoService implements ITodoService {
 		return tododao.findOne(todoEnt.getId());
 	}
 	@Override
-	public  Todo storeTodo(Todo todo){
+	public  Todo store(Todo todo){
 		User u =todo.getCreator();
-		if(userdao.findById(u.getId()) == null) {
-			u = userdao.save(u);	
+		User saved;
+		if(userdao.findByLogin(u.getLogin())== null) {
+			saved = userdao.save(u);	
 		}
-		todo.setCreator(u);
+		else {
+			saved = userdao.findByLogin(u.getLogin());
+		}
+		todo.setCreator(saved);
 		if(tododao.findById(todo.getId()) == null){
 			return tododao.save(todo);
 		}
 		else return null;
 	}
+	
 	/* (non-Javadoc)
 	 * @see fi.johannes.services.ITodoService#todosForUser(fi.johannes.services.User)
 	 */
