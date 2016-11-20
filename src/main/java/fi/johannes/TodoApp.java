@@ -1,6 +1,7 @@
 package fi.johannes;
 
 import org.h2.server.web.WebServlet;
+import org.h2.tools.Server;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,8 +22,17 @@ public class TodoApp {
 	    registration.addUrlMappings("/console/*");
 	    return registration;
 	}
+	
 	@Bean
-	public void populateDb(){
+	org.h2.tools.Server h2Server() {
+	    Server server = new Server();
+	    try {
+	        server.runTool("-tcp");
+	        server.runTool("-tcpAllowOthers");
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return server;
 
 	}
 }
