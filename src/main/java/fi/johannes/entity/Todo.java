@@ -9,8 +9,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Todo {
 
 	// TODO Open up possibility of removing a Todo without the need for the generated Id
@@ -73,5 +75,9 @@ public class Todo {
 	}
 	public void addKeyword(String kw){
 		keywords.add(kw);
+	}
+
+	public void setCreated(LocalDateTime created) {
+		this.created = created;
 	}
 }

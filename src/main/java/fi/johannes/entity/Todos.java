@@ -1,16 +1,23 @@
 package fi.johannes.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.List;
 
 /**
  * Created by johanness on 18/11/2016.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Todos {
 
     private List<Todo> todos;
 
     public Todos(){
 
+    }
+
+    public Todos(List<Todo> todos) {
+        this.todos = todos;
     }
     public List<Todo> getTodos() {
         return todos;
