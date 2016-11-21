@@ -17,16 +17,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http
 			.csrf().disable() // FIXME Figure out way to do CSFR
 			.authorizeRequests()
-				.anyRequest().fullyAuthenticated()
+				.anyRequest().authenticated()
 				.and()
-			.formLogin()
-				.loginPage("/login")
-				.permitAll()
-				.defaultSuccessUrl("/")
-			.and()
-				.logout()                                    
-				.permitAll()
-				.logoutSuccessUrl("/logout");
+                    .formLogin()
+                        .loginPage("/login")
+                        .permitAll()
+                        .defaultSuccessUrl("/")
+                .and()
+                    .logout()
+                    .permitAll()
+                    .logoutSuccessUrl("/logout");
 	}
 
 	@Autowired
