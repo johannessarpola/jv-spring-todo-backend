@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>View todos for the week</title>
+</head>
+<body>
+<li th:each="todo : ${todos}">
+    <span th:text="${todo.entry}">hello world!</span>
+</li>
+
+</body>
+</html>
