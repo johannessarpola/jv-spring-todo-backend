@@ -3,7 +3,9 @@ package fi.johannes.controllers;
 import java.security.Principal;
 import java.util.List;
 
+import fi.johannes.entity.Todos;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,7 +23,7 @@ import fi.johannes.randombeans.MockTodo;
 import fi.johannes.services.ITodoService;
 
 @RestController
-@RequestMapping(path="/todos/api")
+@RequestMapping(path="/todos/api", produces = "application/json")
 public class TodoApiController {
 	
 	@Autowired
@@ -52,22 +54,26 @@ public class TodoApiController {
 			return ResponseEntity.badRequest().body(new Todo());
 		}
 	}
-	
+	// TODO Change to Todos
 	@RequestMapping(path="/getTodos", method=RequestMethod.POST) 
 	public List<Todo> getToDueToday(@RequestParam(name="num", defaultValue=10+"", required=false) Integer number){
 		return todoService.getTodoDueToday(user);
 	}
 	
 	@RequestMapping(path="/currentWeek", method=RequestMethod.GET)
-	public List<Todo> getToDueCurrentWeek(@RequestParam(name="num", defaultValue=10+"", required=false) Integer number){
-		return todoService.getTodoDueCurrentWeek(user);
+	public Todos getToDueCurrentWeek(@RequestParam(name="num", defaultValue=10+"", required=false) Integer number){
+		List<Todo> listtodo = todoService.getTodoDueCurrentWeek(user);
+        Todos todos = new Todos(listtodo);
+        return todos;
 	}
-	
+
+	// TODO Change to Todos
 	@RequestMapping(path="/todos", method=RequestMethod.POST) 
 	public List<Todo> getTodos(@RequestParam(name="num", defaultValue=10+"", required=false) Integer number){
 		return todoService.getLatest(number, user);	
 	}
-	
+
+	// TODO Change to Todos
 	@RequestMapping(path="/all", method=RequestMethod.GET)
 	public List<Todo> getTodos(){
 		return todoService.allTodos();
