@@ -1,6 +1,8 @@
 package fi.johannes.controllers;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import fi.johannes.entity.Todos;
@@ -30,8 +32,9 @@ public class TodoApiController {
 	
 	// TODO This needs to be stored somewhere
 	private User user;
-	
-	@RequestMapping(path="/store", method=RequestMethod.POST)
+
+
+	@RequestMapping(path="/store/single", method=RequestMethod.POST)
 	public ResponseEntity<Todo> storeTodo(@RequestBody Todo todo){
 		// TODO Authentication
 		if(todo != null) {
@@ -40,6 +43,18 @@ public class TodoApiController {
 		}
 		else {
 			return ResponseEntity.badRequest().body(new Todo());
+		}
+	}
+	@RequestMapping(path="/store/multiple", method=RequestMethod.POST)
+	public ResponseEntity<List<Todo>> storeTodos(@RequestBody Todo[] todos){
+		// TODO Authentication
+		if(todos != null) {
+			List<Todo> todosList = new ArrayList<>();
+			Arrays.stream(todos).forEach(todo -> todosList.add(todoService.store(todo)));
+			return ResponseEntity.ok(todosList);
+		}
+		else {
+			return ResponseEntity.badRequest().body(null);
 		}
 	}
 	// TODO Change to Todos
@@ -55,13 +70,11 @@ public class TodoApiController {
         return todos;
 	}
 
-	// TODO Change to Todos
-	@RequestMapping(path="/todos", method=RequestMethod.POST) 
+	@RequestMapping(path="/todos", method=RequestMethod.POST)
 	public List<Todo> getTodos(@RequestParam(name="num", defaultValue=10+"", required=false) Integer number){
 		return todoService.getLatest(number, user);	
 	}
 
-	// TODO Change to Todos
 	@RequestMapping(path="/all", method=RequestMethod.GET)
 	public List<Todo> getTodos(){
 		return todoService.allTodos();
