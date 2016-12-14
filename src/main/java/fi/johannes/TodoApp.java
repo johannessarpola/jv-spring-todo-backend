@@ -45,6 +45,7 @@ public class TodoApp {
 
 	@Bean
 	public CommandLineRunner populateWeek(TodoService todoService){
+	    // Populates db with couple todos
         return (args) -> {
             String[] entries = {"Wash dishes", "Take out garbages", "Walk the dog", "Study stuff"};
             String[] logins = {"johnny", "ben", "einstein"};
