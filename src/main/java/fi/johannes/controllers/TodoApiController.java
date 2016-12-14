@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import fi.johannes.dto.TodoDto;
 import fi.johannes.entity.Todo;
 import fi.johannes.entity.User;
 import fi.johannes.randombeans.MockTodo;
@@ -32,17 +31,6 @@ public class TodoApiController {
 	// TODO This needs to be stored somewhere
 	private User user;
 	
-	@RequestMapping(path="/storeDto", method=RequestMethod.POST)
-	public ResponseEntity<Todo> storeTodo(@RequestBody TodoDto todo){
-		// TODO Authentication
-		if(todo != null) {
-			Todo stored = todoService.store(todo);
-			return ResponseEntity.ok(stored);
-		}
-		else {
-			return ResponseEntity.badRequest().body(new Todo());
-		}
-	}
 	@RequestMapping(path="/store", method=RequestMethod.POST)
 	public ResponseEntity<Todo> storeTodo(@RequestBody Todo todo){
 		// TODO Authentication
