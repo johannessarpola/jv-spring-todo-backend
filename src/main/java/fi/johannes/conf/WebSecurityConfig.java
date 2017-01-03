@@ -50,6 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 					.url("ldap://ldap.forumsys.com:389/dc=example,dc=com")
 						.managerDn("cn=read-only-admin,dc=example,dc=com")
 						.managerPassword("password");
+
 			
 	}
 }
