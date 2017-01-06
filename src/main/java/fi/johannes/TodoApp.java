@@ -47,16 +47,17 @@ public class TodoApp {
 	public CommandLineRunner populateWeek(TodoService todoService){
 	    // Populates db with couple todos
         return (args) -> {
-            String[] entries = {"Wash dishes", "Take out garbages", "Walk the dog", "Study stuff"};
+            String[] entries = {"Wash dishes", "See doctor", "Take out garbage", "Walk the dog",
+                    "Study stuff", "Be smart", "Don't die", "Pay rent", "Upgrade lives of other people"};
             String[] logins = {"johnny", "ben", "einstein"};
             String[] emails = {"johnny@mail.ru", "ben@bensmail.com", "one@ones.com"};
             String[] names = {"Johnny Alamo", "Ben Rubenstein", "Albert Einstein"};
             Random random = new Random(123L);
-            for (int i = 0; i < 20; i++) {
+            for (int i = 0; i < 100; i++) {
                 Todo todo = new Todo();
                 User user = new User();
-                int userindex = random.nextInt(logins.length - 1);
-                int entryindex = random.nextInt(entries.length - 1);
+                int userindex = random.nextInt(logins.length);
+                int entryindex = random.nextInt(entries.length);
                 LocalDateTime now = LocalDateTime.now().withHour(6);
                 int secondstoadd = random.nextInt(7 * 24 * 60 * 60);
                 int secondstoaddcreated = random.nextInt(12 * 60 * 60);
