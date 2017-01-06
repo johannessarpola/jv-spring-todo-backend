@@ -14,7 +14,6 @@ import fi.johannes.dao.ITodoDao;
 import fi.johannes.dao.IUserDao;
 import fi.johannes.entity.Todo;
 import fi.johannes.entity.User;
-import fi.johannes.misc.Mockup;
 import fi.johannes.util.DateUtils;
 
 @Service
@@ -82,7 +81,7 @@ public class TodoService implements ITodoService {
 	@Override
 	public List<Todo> getTodoDueCurrentWeek(User user){
 		Pair<LocalDateTime, LocalDateTime> week= DateUtils.getCurrentWeek();
-		List<Todo> toDue = tododao.findByDeadlineBetween(week.getFirst(), week.getSecond(), user);
+		List<Todo> toDue = tododao.findByDeadlineBetweenAndCreator(week.getFirst(), week.getSecond(), user);
 		return toDue;
 	}
 
