@@ -24,10 +24,11 @@ public class AppController {
     @RequestMapping("/")
     public String index(){
         // TODO welcome page
-        return "inde    x";
+        return "index";
     }
     @RequestMapping("/week")
     public String weekTodos(Model model, @RequestHeader HttpHeaders headers){
+        todoClient.setUsername("einstein"); todoClient.setPassword("password");
         List<Todo> todos = todoClient.getCurrentWeek(headers);
         model.addAttribute("todos", todos);
         return "week";

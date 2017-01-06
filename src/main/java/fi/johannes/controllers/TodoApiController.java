@@ -5,13 +5,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import fi.johannes.entity.Todos;
+import fi.johannes.dto.Todos;
+import fi.johannes.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.ldap.userdetails.Person;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,6 +28,9 @@ public class TodoApiController {
 	
 	@Autowired
 	ITodoService todoService;
+
+	@Autowired
+    UserService userService; // TODO Interface
 	
 	// TODO This needs to be stored somewhere
 	private User user;
@@ -63,8 +65,11 @@ public class TodoApiController {
 		return todoService.getTodoDueToday(user);
 	}
 	
-	@RequestMapping(path="/currentWeek", method=RequestMethod.GET)
-	public Todos getToDueCurrentWeek(@RequestParam(name="num", defaultValue=10+"", required=false) Integer number){
+	@RequestMapping(path="/week", method=RequestMethod.GET)
+	public Todos getToDueCurrentWeek(@RequestParam(name="num", defaultValue=10+"", required=false) Integer number, Principal principal){
+
+	    System.out.println(principal);
+	    User user = userService.findByUsername(principal.getName());
 		List<Todo> listtodo = todoService.getTodoDueCurrentWeek(user);
         Todos todos = new Todos(listtodo);
         return todos;
