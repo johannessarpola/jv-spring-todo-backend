@@ -10,6 +10,10 @@ import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import fi.johannes.serialization.LocalDateTimeDeserializer;
+import fi.johannes.serialization.LocalDateTimeSerializer;
 
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -25,9 +29,15 @@ public class Todo {
 	User creator;
 	
 	String entry;
-	// TODO What happens if date is faulty ??
+
+	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
+	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	LocalDateTime created;
+
+	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
+	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	LocalDateTime deadline;
+
 	Boolean done;
 	
 	@OneToOne

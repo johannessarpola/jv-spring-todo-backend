@@ -1,6 +1,7 @@
-package fi.johannes.entity;
+package fi.johannes.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import fi.johannes.entity.Todo;
 
 import java.util.List;
 
