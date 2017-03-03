@@ -1,39 +1,34 @@
 package fi.johannes.controllers;
 
+import fi.johannes.dto.Todos;
+import fi.johannes.models.Todo;
+import fi.johannes.models.User;
+import fi.johannes.services.impl.UsersService;
+import fi.johannes.services.interfaces.ITodoService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import fi.johannes.dto.Todos;
-import fi.johannes.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import fi.johannes.entity.Todo;
-import fi.johannes.entity.User;
-import fi.johannes.randombeans.MockTodo;
-import fi.johannes.services.ITodoService;
-
 @RestController
 @RequestMapping(path="/todos/api", produces = "application/json")
 public class TodoApiController {
 	
-	@Autowired
-	ITodoService todoService;
-
-	@Autowired
-    UserService userService; // TODO Interface
+	private final ITodoService todoService;
+	private final UsersService userService;
 	
 	// TODO This needs to be stored somewhere
-	private User user;
+	private User todoUser;
+
+	@Autowired
+	public TodoApiController(UsersService userService, ITodoService todoService) {
+		this.userService = userService;
+		this.todoService = todoService;
+	}
 
 
 	@RequestMapping(path="/store/single", method=RequestMethod.POST)
@@ -59,25 +54,24 @@ public class TodoApiController {
 			return ResponseEntity.badRequest().body(null);
 		}
 	}
-	// TODO Change to Todos
-	@RequestMapping(path="/getTodos", method=RequestMethod.POST) 
-	public List<Todo> getToDueToday(@RequestParam(name="num", defaultValue=10+"", required=false) Integer number){
-		return todoService.getTodoDueToday(user);
+
+	@RequestMapping(path="/today", method=RequestMethod.POST)
+	public Todos getToDueToday(Principal principal){
+		User todoUser = userService.findByUsername(principal.getName());
+		return new Todos(todoService.getTodoDueToday(todoUser));
 	}
 	
 	@RequestMapping(path="/week", method=RequestMethod.GET)
 	public Todos getToDueCurrentWeek(@RequestParam(name="num", defaultValue=10+"", required=false) Integer number, Principal principal){
-
-	    System.out.println(principal);
-	    User user = userService.findByUsername(principal.getName());
-		List<Todo> listtodo = todoService.getTodoDueCurrentWeek(user);
+		User todoUser = userService.findByUsername(principal.getName());
+		List<Todo> listtodo = todoService.getTodoDueCurrentWeek(todoUser);
         Todos todos = new Todos(listtodo);
         return todos;
 	}
 
 	@RequestMapping(path="/todos", method=RequestMethod.POST)
 	public List<Todo> getTodos(@RequestParam(name="num", defaultValue=10+"", required=false) Integer number){
-		return todoService.getLatest(number, user);	
+		return todoService.getLatest(number, todoUser);
 	}
 
 	@RequestMapping(path="/all", method=RequestMethod.GET)
@@ -91,22 +85,5 @@ public class TodoApiController {
 		return updated;
 	}
 
-	@RequestMapping(path="/user", method = RequestMethod.GET)
-	UserDetails getUser(){
-		UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return user;
-	}
 
-	@RequestMapping(path="/mockups")
-	List<Todo> mocking(){
-		// TODO Move to tests
-		for(int i=0; i<10; i++){
-			Todo td = MockTodo.giveOne();
-			td.getCreator();
-			td.setKeywords(null);
-			todoService.store(td);
-		}
-		return todoService.allTodos();
-	}
-	
 }
