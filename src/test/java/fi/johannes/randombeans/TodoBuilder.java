@@ -9,7 +9,7 @@ import java.time.temporal.ChronoUnit;
 
 import org.junit.Test;
 
-import fi.johannes.entity.Todo;
+import fi.johannes.models.Todo;
 import io.github.benas.randombeans.EnhancedRandomBuilder;
 import io.github.benas.randombeans.api.EnhancedRandom;
 

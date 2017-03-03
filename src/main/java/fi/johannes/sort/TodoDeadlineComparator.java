@@ -2,7 +2,7 @@ package fi.johannes.sort;
 
 import java.util.Comparator;
 
-import fi.johannes.entity.Todo;
+import fi.johannes.models.Todo;
 
 public class TodoDeadlineComparator implements Comparator<Todo> {
 
