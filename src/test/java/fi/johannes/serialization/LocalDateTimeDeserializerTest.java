@@ -24,12 +24,12 @@ import fi.johannes.util.DateUtils;
 public class LocalDateTimeDeserializerTest {
 
     private ObjectMapper mapper;
-    private LocalDateTimeDeserializer deserializer;
+    private CustomDateDeserializer deserializer;
 
     @Before
     public void setup() {
         mapper = new ObjectMapper();
-        deserializer = new LocalDateTimeDeserializer();
+        deserializer = new CustomDateDeserializer();
     }
 	
 	@Test

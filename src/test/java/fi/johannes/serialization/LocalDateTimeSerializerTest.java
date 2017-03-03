@@ -41,7 +41,7 @@ public class LocalDateTimeSerializerTest {
 	    Writer jsonWriter = new StringWriter();
 	    JsonGenerator jsonGenerator = new JsonFactory().createGenerator(jsonWriter);
 	    SerializerProvider serializerProvider = new ObjectMapper().getSerializerProvider();
-		LocalDateTimeSerializer ldts = new LocalDateTimeSerializer();
+		CustomDateSerializer ldts = new CustomDateSerializer();
 		ldts.serialize(now, jsonGenerator, serializerProvider);
 		jsonGenerator.flush();
 		assertEquals("\""+astext+"\"", jsonWriter.toString());

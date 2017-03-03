@@ -1,8 +1,8 @@
 package fi.johannes;
 
-import fi.johannes.entity.Todo;
-import fi.johannes.entity.User;
-import fi.johannes.services.TodoService;
+import fi.johannes.models.Todo;
+import fi.johannes.models.User;
+import fi.johannes.services.impl.TodoService;
 import org.h2.server.web.WebServlet;
 import org.h2.tools.Server;
 import org.springframework.boot.CommandLineRunner;
@@ -43,7 +43,7 @@ public class TodoApp {
 
 	}
 
-	@Bean
+	/*@Bean
 	public CommandLineRunner populateWeek(TodoService todoService){
 	    // Populates db with couple todos
         return (args) -> {
@@ -55,16 +55,16 @@ public class TodoApp {
             Random random = new Random(123L);
             for (int i = 0; i < 100; i++) {
                 Todo todo = new Todo();
-                User user = new User();
+                User todoUser = new User();
                 int userindex = random.nextInt(logins.length);
                 int entryindex = random.nextInt(entries.length);
                 LocalDateTime now = LocalDateTime.now().withHour(6);
                 int secondstoadd = random.nextInt(7 * 24 * 60 * 60);
                 int secondstoaddcreated = random.nextInt(12 * 60 * 60);
-                user.setEmail(emails[userindex]);
-                user.setName(names[userindex]);
-                user.setLogin(logins[userindex]);
-                todo.setCreator(user);
+                todoUser.setEmail(emails[userindex]);
+                todoUser.setName(names[userindex]);
+                todoUser.setLogin(logins[userindex]);
+                todo.setCreator(todoUser);
                 todo.setDone(random.nextBoolean());
                 todo.setEntry(entries[entryindex]);
                 todo.setDeadline(now.plusSeconds(secondstoadd));
@@ -72,5 +72,5 @@ public class TodoApp {
                 todoService.store(todo);
             }
         };
-	}
+	}*/
 }
