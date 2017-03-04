@@ -1,32 +1,32 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8" />
-<title>Insert title here</title>
+    <meta charset="UTF-8"/>
+    <title>Insert title here</title>
 </head>
 <body>
 
 <h1> Login page </h1>
-<div tiles:fragment="content">
-        <form name="f" th:action="@{/login}" method="post">               
-            <fieldset>
-                <legend>Please Login</legend>
-                <div th:if="${param.error}" class="alert alert-error">    
-                    Invalid username and password.
-                </div>
-                <div th:if="${param.logout}" class="alert alert-success"> 
-                    You have been logged out.
-                </div>
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username"/>        
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password"/>
-                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>.    
-                <div class="form-actions">
-                    <button type="submit" class="btn">Log in</button>
-                </div>
-            </fieldset>
-        </form>
+<form role="form" action="/login" method="post">
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+    <div>
+        <label for="login">Login name</label>
+        <input type="login" name="login" id="login" required="required" autofocus="autofocus"/>
     </div>
+    <div>
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" required="required"/>
+    </div>
+    <div>
+        <label for="remember-me">Remember me</label>
+        <input type="checkbox" name="remember-me" id="remember-me"/>
+    </div>
+    <button type="submit">Sign in</button>
+</form>
+
+<!--/*@thymesVar id="error" type="java.util.Optional"*/-->
+<div th:if="${error.isPresent()}">
+    <p>The email or password you have entered is invalid, try again.</p>
+</div>
 </body>
 </html>
