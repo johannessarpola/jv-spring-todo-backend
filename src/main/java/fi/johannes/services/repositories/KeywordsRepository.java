@@ -1,10 +1,9 @@
 package fi.johannes.services.repositories;
 
-import org.springframework.data.repository.CrudRepository;
-
 import fi.johannes.models.Keywords;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface KeywordsRepository extends CrudRepository<Keywords, Long> {
+public interface KeywordsRepository extends JpaRepository<Keywords, Long> {
 
 	// TODO Evaluate is this pointless
 }

@@ -1,14 +1,13 @@
 package fi.johannes.services.repositories;
 
+import fi.johannes.models.Todo;
+import fi.johannes.models.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
-import fi.johannes.models.User;
-import org.springframework.data.repository.CrudRepository;
-
-import fi.johannes.models.Todo;
-
-public interface TodoRepository extends CrudRepository<Todo, Long> {
+public interface TodoRepository extends JpaRepository<Todo, Long> {
 
 	// Pretty fancy
 	public List<Todo> findByCreator(User todoUser);
