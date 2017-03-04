@@ -1,45 +1,43 @@
 package fi.johannes.models;
 
-import javax.persistence.*;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import fi.johannes.common.Strings;
-import org.springframework.security.core.GrantedAuthority;
 
+import javax.persistence.*;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Entity
-public class User extends org.springframework.security.core.userdetails.User {
+public class User {
 
 
     @Id
     @JsonIgnore
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private long id;
 
     private String email;
     private String firstName;
     private String lastName;
+
+    @JsonIgnore
     private String login;
+
+    @JsonIgnore
+    private String passwordHash;
 
     @OneToMany
     private Set<Role> roles;
 
-    public User(String username,
-                String password,
-                boolean enabled,
-                boolean accountNonExpired,
-                boolean credentialsNonExpired,
-                boolean accountNonLocked,
-                Collection<? extends GrantedAuthority> authorities) {
-        super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
+    public User() {
         roles = new HashSet<>();
         firstName = Strings.emptyTextField;
         lastName = Strings.emptyTextField;
         login = Strings.emptyTextField;
+        passwordHash = Strings.emptyTextField;
     }
 
     public String getEmail() {
@@ -71,5 +69,33 @@ public class User extends org.springframework.security.core.userdetails.User {
     }
     public void addRole(Role role){
         this.roles.add(role);
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Collection<String> getRolesAsStringsCol() {
+        return roles.stream().map(Role::getDisplayName).collect(Collectors.toList());
+    }
+    public String[] getRolesAsStringsArr() {
+        Collection<String> roles = getRolesAsStringsCol();
+        return roles.toArray(new String[roles.size ()]);
     }
 }
