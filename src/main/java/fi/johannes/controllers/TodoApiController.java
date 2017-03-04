@@ -3,8 +3,8 @@ package fi.johannes.controllers;
 import fi.johannes.dto.Todos;
 import fi.johannes.models.Todo;
 import fi.johannes.models.User;
-import fi.johannes.services.impl.UsersService;
-import fi.johannes.services.interfaces.ITodoService;
+import fi.johannes.services.impl.UsersServiceImpl;
+import fi.johannes.services.interfaces.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,14 +18,14 @@ import java.util.List;
 @RequestMapping(path="/todos/api", produces = "application/json")
 public class TodoApiController {
 	
-	private final ITodoService todoService;
-	private final UsersService userService;
+	private final TodoService todoService;
+	private final UsersServiceImpl userService;
 	
 	// TODO This needs to be stored somewhere
 	private User todoUser;
 
 	@Autowired
-	public TodoApiController(UsersService userService, ITodoService todoService) {
+	public TodoApiController(UsersServiceImpl userService, TodoService todoService) {
 		this.userService = userService;
 		this.todoService = todoService;
 	}

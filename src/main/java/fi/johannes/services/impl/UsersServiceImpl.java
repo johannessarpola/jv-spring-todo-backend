@@ -1,69 +1,61 @@
 package fi.johannes.services.impl;
 
+import fi.johannes.dto.UserCreateForm;
 import fi.johannes.models.User;
-import fi.johannes.models.Role;
-import fi.johannes.services.dao.UserDao;
+import fi.johannes.services.repositories.UserRepository;
+import fi.johannes.services.interfaces.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.Collection;
+import java.util.Optional;
 
 /**
  * johanness on 03/03/2017.
  */
 
 @Service
-public class UsersService implements UserDetailsService {
+public class UsersServiceImpl implements UsersService {
+
+    private final UserRepository userRepository;
 
     @Autowired
-    UserDao userDao;
+    public UsersServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
-    public UserDetails loadUserByUsername(final String login) throws UsernameNotFoundException {
-
-        //Try to find user and its roles, for example here we try to get it from database via a DAO object
-        //Do not confuse this foo.bar.User with CurrentUser or spring User, this is a temporary object which holds user info stored in database
-        User user = userDao.findByLogin(login);
-
-        //Build user Authority. some how a convert from your custom roles which are in database to spring GrantedAuthority
-        List<GrantedAuthority> authorities = buildUserAuthority(user.getUserRoles());
-
-        //The magic is happen in this private method !
-        return buildUserForAuthentication(user, authorities);
-
+    public Optional<User> getUserById(long id) {
+        return Optional.ofNullable(userRepository.findOne(id));
     }
 
-    private User buildUserForAuthentication(User user,
-                                            List<GrantedAuthority> authorities) {
-        String username = user.getUsername();
-        String password = user.getPassword();
-        boolean enabled = true;
-        boolean accountNonExpired = true;
-        boolean credentialsNonExpired = true;
-        boolean accountNonLocked = true;
-        return new User(username, password, enabled, accountNonExpired, credentialsNonExpired,
-                accountNonLocked, authorities);
+    @Override
+    public Optional<User> getUserByEmail(String email) {
+        return Optional.ofNullable(userRepository.findOneByEmail(email));
     }
 
-    private List<GrantedAuthority> buildUserAuthority(Set<Role> userRoles) {
-
-        Set<GrantedAuthority> setAuths = new HashSet<GrantedAuthority>();
-        for (Role userRole : userRoles) {
-            setAuths.add(new SimpleGrantedAuthority(userRole.getRole()));
-        }
-        return new ArrayList<>(setAuths);
+    @Override
+    public Optional<User> getUserByLogin(String login) {
+        return Optional.ofNullable(userRepository.findOneByLogin(login));
     }
 
-    public User findByUsername(String name) {
-        return null;
+    @Override
+    public Collection<User> getAllUsers() {
+        return userRepository.findAll(new Sort("email"));
+    }
+
+    @Override
+    public User create(UserCreateForm form) {
+        User user = new User();
+        user.setLogin(form.getLogin());
+        user.setEmail(form.getEmail());
+        user.setPasswordHash(new BCryptPasswordEncoder().encode(form.getPassword()));
+        user.addRole(form.getRole());
+        user.setFirstName(form.getFirstName());
+        user.setLastName(form.getLastName());
+        return userRepository.save(user);
     }
 }
 

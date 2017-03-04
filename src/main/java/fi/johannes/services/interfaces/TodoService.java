@@ -5,7 +5,7 @@ import java.util.List;
 import fi.johannes.models.Todo;
 import fi.johannes.models.User;
 
-public interface ITodoService {
+public interface TodoService {
 
 
 	List<Todo> todosForUser(User todoUser);
