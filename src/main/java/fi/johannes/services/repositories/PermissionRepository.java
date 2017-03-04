@@ -1,13 +1,12 @@
-package fi.johannes.services.dao;
+package fi.johannes.services.repositories;
 
-import fi.johannes.models.Role;
+import fi.johannes.models.Permission;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 /**
  * johanness on 03/03/2017.
  */
-
 @Repository
-public interface RoleDao extends CrudRepository<Role, Long> {
+public interface PermissionRepository extends CrudRepository<Permission, Long>{
 }

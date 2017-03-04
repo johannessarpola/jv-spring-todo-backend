@@ -1,4 +1,4 @@
-package fi.johannes.services.dao;
+package fi.johannes.services.repositories;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -8,7 +8,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import fi.johannes.models.Todo;
 
-public interface TodoDao extends CrudRepository<Todo, Long> {
+public interface TodoRepository extends CrudRepository<Todo, Long> {
 
 	// Pretty fancy
 	public List<Todo> findByCreator(User todoUser);
