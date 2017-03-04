@@ -92,7 +92,7 @@ public class User {
     }
 
     public Collection<String> getRolesAsStringsCol() {
-        return roles.stream().map(Role::getDisplayName).collect(Collectors.toList());
+        return roles.stream().map(Role::getShortenedName).collect(Collectors.toList());
     }
     public String[] getRolesAsStringsArr() {
         Collection<String> roles = getRolesAsStringsCol();

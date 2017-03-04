@@ -9,7 +9,7 @@ import java.util.Optional;
 /**
  * johanness on 04/03/2017.
  */
-public interface UsersService {
+public interface UserService {
 
     Optional<User> getUserById(long id);
     Optional<User> getUserByLogin(String login);

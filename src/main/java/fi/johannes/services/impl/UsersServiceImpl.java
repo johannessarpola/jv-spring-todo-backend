@@ -3,10 +3,11 @@ package fi.johannes.services.impl;
 import fi.johannes.dto.UserCreateForm;
 import fi.johannes.models.User;
 import fi.johannes.services.repositories.UserRepository;
-import fi.johannes.services.interfaces.UsersService;
+import fi.johannes.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -15,9 +16,8 @@ import java.util.Optional;
 /**
  * johanness on 03/03/2017.
  */
-
 @Service
-public class UsersServiceImpl implements UsersService {
+public class UsersServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 

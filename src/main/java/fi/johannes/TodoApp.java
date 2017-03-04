@@ -1,19 +1,12 @@
 package fi.johannes;
 
-import fi.johannes.models.Todo;
-import fi.johannes.models.User;
-import fi.johannes.services.impl.TodoService;
 import org.h2.server.web.WebServlet;
 import org.h2.tools.Server;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
-
-import java.time.LocalDateTime;
-import java.util.Random;
 
 @SpringBootApplication
 @EnableAutoConfiguration

@@ -12,12 +12,12 @@ import org.springframework.stereotype.Service;
  * johanness on 04/03/2017.
  */
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class AppUserDetailsServiceImpl implements UserDetailsService {
     private final UsersService userService;
 
 
     @Autowired
-    public UserDetailsServiceImpl(UsersService userService) {
+    public AppUserDetailsServiceImpl(UsersService userService) {
         this.userService = userService;
     }
 
@@ -27,5 +27,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("User with email=%s was not found", email)));
         return new UserDetails(user);
     }
+
+    
 }
 
