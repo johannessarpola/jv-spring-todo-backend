@@ -57,13 +57,13 @@ public class TodoApiController {
 
 	@RequestMapping(path="/today", method=RequestMethod.POST)
 	public Todos getToDueToday(Principal principal){
-		User todoUser = userService.findByUsername(principal.getName());
+		User todoUser = userService.getUserByLogin(principal.getName()).get(); // FIXME
 		return new Todos(todoService.getTodoDueToday(todoUser));
 	}
 	
 	@RequestMapping(path="/week", method=RequestMethod.GET)
 	public Todos getToDueCurrentWeek(@RequestParam(name="num", defaultValue=10+"", required=false) Integer number, Principal principal){
-		User todoUser = userService.findByUsername(principal.getName());
+		User todoUser = userService.getUserByLogin(principal.getName()).get(); // FIXME
 		List<Todo> listtodo = todoService.getTodoDueCurrentWeek(todoUser);
         Todos todos = new Todos(listtodo);
         return todos;
