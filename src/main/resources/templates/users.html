@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+</head>
+<body>
+<!--/*@thymesVar id="users" type="java.util.Collection"*/-->
+<!--/*@thymesVar id="user" type="fi.johannes.models.User"*/-->
+<tr th:each="user : ${users}">
+    <td th:text="${user.getEmail()}">1</td>
+</tr>
+
+
+</body>
+</html>

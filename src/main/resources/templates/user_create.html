@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>Create a new user</title>
+</head>
+<body>
+<nav role="navigation">
+    <ul>
+        <li><a href="/">Home</a></li>
+    </ul>
+</nav>
+
+<h1>Create a new user</h1>
+
+<form role="form" name="form" action="" method="post">
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+
+    <div>
+        <label for="login">Loginname</label>
+        <input type="login" name="login" id="login" value="${form.login}" required="required" autofocus="autofocus"/>
+    </div>
+    <div>
+        <label for="email">Email address</label>
+        <input type="email" name="email" id="email" value="${form.email}" required="required"/>
+    </div>
+    <div>
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" required="required"/>
+    </div>
+    <div>
+        <label for="passwordRepeated">Repeat</label>
+        <input type="password" name="passwordRepeated" id="passwordRepeated" required="required"/>
+    </div>
+    <div>
+        <!---
+        <label for="role">Role</label>
+       <select name="role" id="role" required>
+            <option
+            <#if form.role == 'USER'>selected</#if>
+            >USER</option>
+            <option
+            <#if form.role == 'ADMIN'>selected</#if>
+            >ADMIN</option>
+        </select>
+-->
+    </div>
+    <button type="submit">Save</button>
+</form>
+
+<!--/*@thymesVar id="error" type="java.util.Optional"*/-->
+<!-- <div th:if="${error.isPresent()}">
+    <p>The email or password you have entered is invalid, try again.</p>
+</div>-->
+
+</body>
+</html>
