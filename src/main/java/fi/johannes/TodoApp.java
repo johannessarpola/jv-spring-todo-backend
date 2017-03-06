@@ -34,9 +34,11 @@ public class TodoApp {
     public CommandLineRunner addSuperUser(UserRepository userRepository, RoleRepository roleRepository) {
         return (args) -> {
             Role role = new Role("SUPER_ADMIN", "owner", "ownder");
+            Role role2 = new Role("ADMIN", "admin", "admin");
             User superUser = new User();
             superUser.setLogin("johannes");
             superUser.addRole(role);
+            superUser.addRole(role2);
             superUser.setEmail("johannes.sarpola@gmail.com");
             superUser.setPasswordHash(new BCryptPasswordEncoder().encode("1234abcd")); // FIXME
             superUser.setFirstName("Johannes");
