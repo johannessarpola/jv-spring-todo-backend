@@ -10,7 +10,7 @@ public class CustomUserDetails extends org.springframework.security.core.userdet
     private User user;
 
     public CustomUserDetails(fi.johannes.models.User user) {
-        super(user.getEmail(), user.getPasswordHash(), AuthorityUtils.createAuthorityList(user.getRolesAsStringsArr()));
+        super(user.getLogin(), user.getPasswordHash(), AuthorityUtils.createAuthorityList(user.getRolesAsStringsArr()));
         this.user = user;
     }
 
