@@ -1,43 +1,65 @@
 package fi.johannes;
 
+import fi.johannes.models.Role;
+import fi.johannes.models.User;
+import fi.johannes.services.interfaces.UserService;
+import fi.johannes.services.repositories.RoleRepository;
+import fi.johannes.services.repositories.UserRepository;
 import org.h2.server.web.WebServlet;
 import org.h2.tools.Server;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
 @EnableAutoConfiguration
 public class TodoApp {
 
-	public static void main(String[] args) {
-		SpringApplication.run(TodoApp.class, args);
-	}
-	
-	@Bean
-	public ServletRegistrationBean h2servletRegistration() {
-	    ServletRegistrationBean registration = new ServletRegistrationBean(new WebServlet());
-	    registration.addUrlMappings("/console/*");
-	    return registration;
-	}
-	
-	@Bean
-	org.h2.tools.Server h2Server() {
-	    Server server = new Server();
-	    try {
-	        server.runTool("-tcp");
-	        server.runTool("-tcpAllowOthers");
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-	    return server;
+    public static void main(String[] args) {
+        SpringApplication.run(TodoApp.class, args);
+    }
 
-	}
+    @Bean
+    public ServletRegistrationBean h2servletRegistration() {
+        ServletRegistrationBean registration = new ServletRegistrationBean(new WebServlet());
+        registration.addUrlMappings("/console/*");
+        return registration;
+    }
+
+    @Bean
+    public CommandLineRunner addSuperUser(UserRepository userRepository, RoleRepository roleRepository) {
+        return (args) -> {
+            Role role = new Role("SUPER_ADMIN", "owner", "ownder");
+            User superUser = new User();
+            superUser.setLogin("johannes");
+            superUser.addRole(role);
+            superUser.setEmail("johannes.sarpola@gmail.com");
+            superUser.setPasswordHash(new BCryptPasswordEncoder().encode("1234abcd")); // FIXME
+            superUser.setFirstName("Johannes");
+            superUser.setLastName("Sarpola");
+            userRepository.save(superUser);
+        };
+
+    }
+    @Bean
+    org.h2.tools.Server h2Server() {
+        Server server = new Server();
+        try {
+            server.runTool("-tcp");
+            server.runTool("-tcpAllowOthers");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return server;
+    }
+
 
 	/*@Bean
-	public CommandLineRunner populateWeek(TodoService todoService){
+    public CommandLineRunner populateWeek(TodoService todoService){
 	    // Populates db with couple todos
         return (args) -> {
             String[] entries = {"Wash dishes", "See doctor", "Take out garbage", "Walk the dog",

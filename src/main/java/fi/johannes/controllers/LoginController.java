@@ -22,4 +22,8 @@ public class LoginController {
 	public ModelAndView getLoginPage(@RequestParam(required = false) String error) {
 		return new ModelAndView("login", "error", Optional.ofNullable(error));
 	}
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public ModelAndView getLoginPage() {
+		return new ModelAndView("success");
+	}
 }

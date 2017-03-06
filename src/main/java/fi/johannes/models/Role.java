@@ -14,15 +14,18 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    final String role;
-    final String displayName;
-    final String shortenedName;
+    String role;
+    String displayName;
+    String shortenedName;
 
-    @OneToMany
-    Collection<Permission> permissions;
+    //@OneToMany
+    //Collection<Permission> permissions;
 
-    Role(String role, String displayName, String shortenedName) {
-        this.permissions = new HashSet<>();
+    public Role() {
+    }
+
+    public Role(String role, String displayName, String shortenedName) {
+//        this.permissions = new HashSet<>();
         this.role = role;
         this.displayName = displayName;
         this.shortenedName = shortenedName;
@@ -32,9 +35,9 @@ public class Role {
         return role;
     }
 
-    public void addPermission(Permission permission){
+    /*public void addPermission(Permission permission){
         this.permissions.add(permission);
-    }
+    }*/
 
     public String getDisplayName() {
         return displayName;

@@ -29,7 +29,7 @@ public class User {
     @JsonIgnore
     private String passwordHash;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Role> roles;
 
     public User() {
