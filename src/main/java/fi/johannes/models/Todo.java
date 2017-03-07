@@ -1,25 +1,26 @@
 package fi.johannes.models;
 
-import java.time.LocalDateTime;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import fi.johannes.dto.TodoCreationForm;
 import fi.johannes.serialization.CustomDateDeserializer;
 import fi.johannes.serialization.CustomDateSerializer;
+import fi.johannes.util.DateUtils;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static fi.johannes.util.StringUtils.getValueNotNullOrEmptyStringsPredicate;
 
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Todo {
 
-	// TODO Open up possibility of removing a Todo without the need for the generated Id
 	@Id
 	@GeneratedValue
 	@JsonIgnore
@@ -90,4 +91,21 @@ public class Todo {
 	public void setCreated(LocalDateTime created) {
 		this.created = created;
 	}
+	public static Todo fromForm(TodoCreationForm todoCreationForm, User creator){
+		Todo todo = new Todo();
+		todo.setCreated(LocalDateTime.now());
+		todo.setDeadline(DateUtils.stringToLocalDateTime(todoCreationForm.getDeadline()));
+		todo.setEntry(todoCreationForm.getEntry());
+		todo.setKeywords(createKeywordsFromArr(todoCreationForm.getKeywords()), todo);
+        todo.setDone(todoCreationForm.getDone());
+        return todo;
+	}
+    private static Keywords createKeywordsFromArr(String[] arr, Todo parent){
+        Set<String> strings = Stream.of(arr).filter(getValueNotNullOrEmptyStringsPredicate()).collect(Collectors.toSet());
+        Keywords keywords = new Keywords();
+        keywords.setKeywords(strings);
+        keywords.setTodo(parent);
+        return keywords;
+	}
+
 }

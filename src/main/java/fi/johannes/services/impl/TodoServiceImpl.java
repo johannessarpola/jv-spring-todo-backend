@@ -4,7 +4,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import fi.johannes.dto.TodoCreationForm;
 import fi.johannes.models.User;
+import fi.johannes.util.UserUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,30 +22,21 @@ import fi.johannes.util.DateUtils;
 public class TodoServiceImpl implements fi.johannes.services.interfaces.TodoService {
 	private final Logger log = LoggerFactory.getLogger(getClass());
 	
-	@Autowired
-    TodoRepository todoRepository;
+	final TodoRepository todoRepository;
 	
+	final UserRepository userRepository;
+
 	@Autowired
-    UserRepository userRepository;
-	
+	public TodoServiceImpl(TodoRepository todoRepository, UserRepository userRepository) {
+		this.todoRepository = todoRepository;
+		this.userRepository = userRepository;
+	}
+
 	@Override
-	public  Todo store(Todo todo){
-		User u =todo.getCreator();
-		User saved;
-		/*
-			if(userRepository.findByLogin(u.getLogin())== null) {
-				saved = userRepository.save(u);
-			}
-			else {
-				saved = userRepository.findByLogin(u.getLogin());
-			}
-			todo.setCreator(saved);
-			if(todoRepository.findById(todo.getId()) == null){
-				return todoRepository.save(todo);
-			}
-			else return null;
-		*/
-		return null;
+	public Todo store(TodoCreationForm form){
+		Todo todo = Todo.fromForm(form, UserUtils.getCurrentUser());
+		todo = todoRepository.save(todo);
+		return todo;
 	}
 	
 	/* (non-Javadoc)
