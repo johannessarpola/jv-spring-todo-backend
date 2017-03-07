@@ -96,7 +96,7 @@ public class Todo {
 		todo.setCreated(LocalDateTime.now());
 		todo.setDeadline(DateUtils.stringToLocalDateTime(todoCreationForm.getDeadline()));
 		todo.setEntry(todoCreationForm.getEntry());
-		todo.setKeywords(createKeywordsFromArr(todoCreationForm.getKeywords()), todo);
+		todo.setKeywords(createKeywordsFromArr(todoCreationForm.getKeywords(), todo));
         todo.setDone(todoCreationForm.getDone());
         return todo;
 	}

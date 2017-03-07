@@ -1,5 +1,6 @@
 package fi.johannes.controllers;
 
+import fi.johannes.dto.TodoCreationForm;
 import fi.johannes.dto.Todos;
 import fi.johannes.models.Todo;
 import fi.johannes.models.User;
@@ -34,10 +35,10 @@ public class TodoApiController {
 
     @PreAuthorize("@currentUserServiceImpl.canAccessUser(principal, #id)")
     @RequestMapping(path = "/store/single", method = RequestMethod.POST)
-    public ResponseEntity<Todo> storeTodo(@RequestBody Todo todo) {
+    public ResponseEntity<Todo> storeTodo(@RequestBody TodoCreationForm form) {
         // TODO Authentication
-        if (todo != null) {
-            Todo stored = todoService.store(todo);
+        if (form != null) {
+            Todo stored = todoService.store(form);
             return ResponseEntity.ok(stored);
         } else {
             return ResponseEntity.badRequest().body(new Todo());
@@ -46,11 +47,11 @@ public class TodoApiController {
 
     @PreAuthorize("@currentUserServiceImpl.canAccessUser(principal, #id)")
     @RequestMapping(path = "/store/multiple", method = RequestMethod.POST)
-    public ResponseEntity<List<Todo>> storeTodos(@RequestBody Todo[] todos) {
+    public ResponseEntity<List<Todo>> storeTodos(@RequestBody TodoCreationForm[] forms) {
         // TODO Authentication
-        if (todos != null) {
+        if (forms != null) {
             List<Todo> todosList = new ArrayList<>();
-            Arrays.stream(todos).forEach(todo -> todosList.add(todoService.store(todo)));
+            Arrays.stream(forms).forEach(todo -> todosList.add(todoService.store(todo)));
             return ResponseEntity.ok(todosList);
         } else {
             return ResponseEntity.badRequest().body(null);

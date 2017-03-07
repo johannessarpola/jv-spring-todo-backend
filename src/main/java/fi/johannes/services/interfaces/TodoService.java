@@ -2,6 +2,7 @@ package fi.johannes.services.interfaces;
 
 import java.util.List;
 
+import fi.johannes.dto.TodoCreationForm;
 import fi.johannes.models.Todo;
 import fi.johannes.models.User;
 
@@ -20,6 +21,6 @@ public interface TodoService {
 
 	Todo update(Todo todo);
 
-	Todo store(Todo todo);
+	Todo store(TodoCreationForm todo);
 
 }
