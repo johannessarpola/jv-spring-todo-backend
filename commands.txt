@@ -1,0 +1,2 @@
+docker build -todo-backend .
+docker run --publish=8080:8080 --rm=true --name=todo-backend todo-backend
