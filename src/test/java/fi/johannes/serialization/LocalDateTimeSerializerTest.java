@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -14,6 +15,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.JsonTest;
 import org.springframework.boot.test.json.JacksonTester;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -33,7 +36,11 @@ public class LocalDateTimeSerializerTest {
 
 	@Autowired
     private JacksonTester<TestDate> json;
-	
+
+	@Autowired
+	private ResourceLoader resourceLoader;
+
+
 	@Test
 	public void serializationTest() throws IOException {
 		LocalDateTime now = LocalDateTime.now();
@@ -53,9 +60,9 @@ public class LocalDateTimeSerializerTest {
 		TestDate td = new TestDate();
 		td.setTime(ab);
 		td.setId("Abc");
-		
+		Resource resource = resourceLoader.getResource("classpath:test-date.json");
         // Assert against a `.json` file in the same package as the test
-        assertThat(this.json.write(td)).isEqualToJson("testDate1.json");
+        assertThat(this.json.write(td)).isEqualToJson(resource);
         // Or use JSON path based assertions
         assertThat(this.json.write(td)).hasJsonPathStringValue("@.time");
         assertThat(this.json.write(td)).extractingJsonPathStringValue("@.time")

@@ -1,10 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
-    <title>Title</title>
+    <meta charset="UTF-8"/>
+    <title>Your information</title>
 </head>
 <body>
-<p>user here</p>
+<!--/*@thymesVar id="user" type="fi.johannes.models.User"*/-->
+
+<table>
+    <tr>
+        <td>Login:</td>
+        <td th:text="${user.getLogin()}"></td>
+    </tr>
+    <tr>
+        <td>Email:</td>
+        <td th:text="${user.getEmail()}"></td>
+    </tr>
+    <tr>
+        <td>First name:</td>
+        <td th:text="${user.getFirstName()}"></td>
+    </tr>
+    <tr>
+        <td>Last name:</td>
+        <td th:text="${user.getLastName()}"></td>
+    </tr>
+
+</table>
 </body>
 </html>

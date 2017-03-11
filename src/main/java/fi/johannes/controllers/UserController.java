@@ -2,7 +2,9 @@ package fi.johannes.controllers;
 
 import fi.johannes.dto.UserCreateForm;
 import fi.johannes.dto.validation.UserCreateFormValidator;
+import fi.johannes.models.User;
 import fi.johannes.services.interfaces.UserService;
+import fi.johannes.util.UserUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import javax.validation.Valid;
 import java.util.NoSuchElementException;
 
 @Controller
+@RequestMapping("/user")
 public class UserController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
@@ -35,7 +38,7 @@ public class UserController {
     }
 
     @PreAuthorize("@currentUserServiceImpl.canAccessUser(principal, #id)")
-    @RequestMapping("/user/{id}")
+    @RequestMapping("/{id}/")
     public ModelAndView getUserPage(@PathVariable Long id) {
         LOGGER.debug("Getting user page for user={}", id);
         return new ModelAndView("user", "user", userService.getUserById(id)
@@ -43,14 +46,14 @@ public class UserController {
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @RequestMapping(value = "/user/create", method = RequestMethod.GET)
+    @RequestMapping(value = "/create/", method = RequestMethod.GET)
     public ModelAndView getUserCreatePage() {
         LOGGER.debug("Getting user create form");
         return new ModelAndView("user_create", "form", new UserCreateForm());
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @RequestMapping(value = "/user/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/create/", method = RequestMethod.POST)
     public String handleUserCreateForm(@Valid @ModelAttribute("form") UserCreateForm form, BindingResult bindingResult) {
         LOGGER.debug("Processing user create form={}, bindingResult={}", form, bindingResult);
         if (bindingResult.hasErrors()) {
@@ -68,6 +71,12 @@ public class UserController {
         }
         // ok, redirect
         return "redirect:/users";
+    }
+    @RequestMapping(value = "/me/", method = RequestMethod.GET)
+    public ModelAndView getProfile() {
+        User currentUser = UserUtils.getCurrentUser();
+        ModelAndView mav = new ModelAndView("user", "user", currentUser);
+        return mav;
     }
 
 }
