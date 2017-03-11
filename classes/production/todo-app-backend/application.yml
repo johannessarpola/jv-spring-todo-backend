@@ -1,0 +1,20 @@
+server:
+  port: 8080
+
+---
+
+spring:
+  profiles: development-ssl
+  thymeleaf.cache: false
+server:
+  port: 8080
+  ssl.key-store: keystore\\6f3ddbf5-7e1a-4793-874a-d93e7cd8d6fa.pfx
+  ssl.key-store-password: djswoopdidoo
+
+---
+
+spring:
+  profiles: development
+  thymeleaf.cache: false
+server:
+  port: 8080
