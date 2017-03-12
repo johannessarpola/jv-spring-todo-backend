@@ -1,31 +1,20 @@
 package fi.johannes.models;
 
-import javax.persistence.*;
-import java.util.Collection;
-import java.util.HashSet;
-
 /**
  * johanness on 03/03/2017.
  */
-@Entity
-public class Role {
+public enum Role {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    SUPER_ADMIN("SUPER_ADMIN", "Super user", "su"),
+    ADMIN("ADMIN", "Admin", "ad"),
+    USER("USER", "User", "u");
+
 
     String role;
     String displayName;
     String shortenedName;
 
-    //@OneToMany
-    //Collection<Permission> permissions;
-
-    public Role() {
-    }
-
-    public Role(String role, String displayName, String shortenedName) {
-//        this.permissions = new HashSet<>();
+    Role(String role, String displayName, String shortenedName) {
         this.role = role;
         this.displayName = displayName;
         this.shortenedName = shortenedName;
@@ -34,10 +23,6 @@ public class Role {
     public String getRole() {
         return role;
     }
-
-    /*public void addPermission(Permission permission){
-        this.permissions.add(permission);
-    }*/
 
     public String getDisplayName() {
         return displayName;
