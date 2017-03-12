@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -74,8 +75,15 @@ public class UserController {
     }
     @RequestMapping(value = "/me/", method = RequestMethod.GET)
     public ModelAndView getProfile() {
-        User currentUser = UserUtils.getCurrentUser();
+        User currentUser = UserUtils.getCustomUser();
         ModelAndView mav = new ModelAndView("user", "user", currentUser);
+        return mav;
+    }
+    @RequestMapping(value = "/me2/", method = RequestMethod.GET)
+    public ModelAndView getProfile2() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        boolean ldap = UserUtils.isLdapAuthenticated();
+        ModelAndView mav = new ModelAndView("user", "user", principal);
         return mav;
     }
 

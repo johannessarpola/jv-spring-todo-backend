@@ -34,7 +34,7 @@ public class TodoServiceImpl implements fi.johannes.services.interfaces.TodoServ
 
 	@Override
 	public Todo store(TodoCreationForm form){
-		Todo todo = Todo.fromForm(form, UserUtils.getCurrentUser());
+		Todo todo = Todo.fromForm(form, UserUtils.getCustomUser());
 		todo = todoRepository.save(todo);
 		return todo;
 	}

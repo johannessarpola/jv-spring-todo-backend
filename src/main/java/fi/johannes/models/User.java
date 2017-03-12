@@ -29,7 +29,10 @@ public class User {
     @JsonIgnore
     private String passwordHash;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ElementCollection(targetClass = Role.class)
+    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "roles", nullable = false)
+    @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
     public User() {
