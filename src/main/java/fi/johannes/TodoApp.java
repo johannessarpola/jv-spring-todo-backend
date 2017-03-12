@@ -2,8 +2,6 @@ package fi.johannes;
 
 import fi.johannes.models.Role;
 import fi.johannes.models.User;
-import fi.johannes.services.interfaces.UserService;
-import fi.johannes.services.repositories.RoleRepository;
 import fi.johannes.services.repositories.UserRepository;
 import org.h2.server.web.WebServlet;
 import org.h2.tools.Server;
@@ -31,14 +29,11 @@ public class TodoApp {
     }
 
     @Bean
-    public CommandLineRunner addSuperUser(UserRepository userRepository, RoleRepository roleRepository) {
+    public CommandLineRunner addSuperUser(UserRepository userRepository) {
         return (args) -> {
-            Role role = new Role("SUPER_ADMIN", "owner", "ownder");
-            Role role2 = new Role("ADMIN", "admin", "admin");
             User superUser = new User();
             superUser.setLogin("johannes");
-            superUser.addRole(role);
-            superUser.addRole(role2);
+            superUser.addRole(Role.SUPER_ADMIN);
             superUser.setEmail("johannes.sarpola@gmail.com");
             superUser.setPasswordHash(new BCryptPasswordEncoder().encode("1234abcd")); // FIXME
             superUser.setFirstName("Johannes");
