@@ -41,7 +41,7 @@ public class Todo {
 
 	Boolean done;
 	
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	Keywords keywords;
 	
 	public Keywords getKeywords() {
@@ -101,9 +101,9 @@ public class Todo {
         return todo;
 	}
     private static Keywords createKeywordsFromArr(String[] arr, Todo parent){
-        Set<String> strings = Stream.of(arr).filter(getValueNotNullOrEmptyStringsPredicate()).collect(Collectors.toSet());
+        Set<Word> strings = Stream.of(arr).filter(getValueNotNullOrEmptyStringsPredicate()).map(Word::new).collect(Collectors.toSet());
         Keywords keywords = new Keywords();
-        keywords.setKeywords(strings);
+        keywords.setWords(strings);
         keywords.setTodo(parent);
         return keywords;
 	}
