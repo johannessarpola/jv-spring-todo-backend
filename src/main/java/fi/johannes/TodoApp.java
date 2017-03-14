@@ -1,8 +1,9 @@
 package fi.johannes;
 
-import fi.johannes.models.Role;
-import fi.johannes.models.User;
+import fi.johannes.models.*;
+import fi.johannes.services.repositories.TodoRepository;
 import fi.johannes.services.repositories.UserRepository;
+import fi.johannes.services.repositories.WordRepository;
 import org.h2.server.web.WebServlet;
 import org.h2.tools.Server;
 import org.springframework.boot.CommandLineRunner;
@@ -12,6 +13,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 @SpringBootApplication
 @EnableAutoConfiguration
@@ -42,6 +49,7 @@ public class TodoApp {
         };
 
     }
+
     @Bean
     org.h2.tools.Server h2Server() {
         Server server = new Server();
@@ -55,9 +63,9 @@ public class TodoApp {
     }
 
 
-	/*@Bean
-    public CommandLineRunner populateWeek(TodoService todoService){
-	    // Populates db with couple todos
+    @Bean
+    public CommandLineRunner populateWeek(TodoRepository todoRepository, UserRepository userRepository, WordRepository wordRepository) {
+        // Populates db with couple todos
         return (args) -> {
             String[] entries = {"Wash dishes", "See doctor", "Take out garbage", "Walk the dog",
                     "Study stuff", "Be smart", "Don't die", "Pay rent", "Upgrade lives of other people"};
@@ -65,24 +73,37 @@ public class TodoApp {
             String[] emails = {"johnny@mail.ru", "ben@bensmail.com", "one@ones.com"};
             String[] names = {"Johnny Alamo", "Ben Rubenstein", "Albert Einstein"};
             Random random = new Random(123L);
-            for (int i = 0; i < 100; i++) {
+            for (int i = 0; i < 10; i++) {
                 Todo todo = new Todo();
-                User todoUser = new User();
-                int userindex = random.nextInt(logins.length);
+                User todoUser = userRepository.findOneByLogin("johannes");
                 int entryindex = random.nextInt(entries.length);
                 LocalDateTime now = LocalDateTime.now().withHour(6);
                 int secondstoadd = random.nextInt(7 * 24 * 60 * 60);
                 int secondstoaddcreated = random.nextInt(12 * 60 * 60);
-                todoUser.setEmail(emails[userindex]);
-                todoUser.setName(names[userindex]);
-                todoUser.setLogin(logins[userindex]);
                 todo.setCreator(todoUser);
                 todo.setDone(random.nextBoolean());
                 todo.setEntry(entries[entryindex]);
                 todo.setDeadline(now.plusSeconds(secondstoadd));
                 todo.setCreated(now.plusSeconds(secondstoaddcreated));
-                todoService.store(todo);
+
+                Keywords keywords = new Keywords();
+                List<String> kws = Arrays.asList("Word", "Second word");
+                keywords.setWords(kws.stream()
+                        .map(s -> {
+                            Word f = wordRepository.findOneByWordStr(s);
+                            if(f == null) {
+                                return wordRepository.save(new Word(s));
+                            }
+                            else {
+                                return f;
+                            }
+                        })
+                        .collect(Collectors.toSet()));
+                keywords.setTodo(todo);
+                todo.setKeywords(keywords);
+
+                todoRepository.save(todo);
             }
         };
-	}*/
+    }
 }
