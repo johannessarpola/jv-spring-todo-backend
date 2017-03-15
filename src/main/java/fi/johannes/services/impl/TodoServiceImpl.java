@@ -6,6 +6,8 @@ import java.util.List;
 
 import fi.johannes.dto.TodoCreationForm;
 import fi.johannes.models.User;
+import fi.johannes.models.Word;
+import fi.johannes.services.repositories.WordRepository;
 import fi.johannes.util.UserUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,17 +25,19 @@ public class TodoServiceImpl implements fi.johannes.services.interfaces.TodoServ
 	private final Logger log = LoggerFactory.getLogger(getClass());
 	
 	final TodoRepository todoRepository;
-	
+    final WordRepository wordRepository;
 	final UserRepository userRepository;
 
 	@Autowired
-	public TodoServiceImpl(TodoRepository todoRepository, UserRepository userRepository) {
+	public TodoServiceImpl(TodoRepository todoRepository, WordRepository wordRepository, UserRepository userRepository) {
 		this.todoRepository = todoRepository;
-		this.userRepository = userRepository;
-	}
+        this.userRepository = userRepository;
+        this.wordRepository = wordRepository;
+    }
 
 	@Override
 	public Todo store(TodoCreationForm form){
+		// TODO handle the word saving without duplicating data
 		Todo todo = Todo.fromForm(form, UserUtils.getCustomUser());
 		todo = todoRepository.save(todo);
 		return todo;
@@ -89,4 +93,9 @@ public class TodoServiceImpl implements fi.johannes.services.interfaces.TodoServ
 			return null;
 		}
 	}
+
+	Word saveOrGet(String word){
+	   wordRepository.findOneByWordStr(word);
+	   return null;
+    }
 }

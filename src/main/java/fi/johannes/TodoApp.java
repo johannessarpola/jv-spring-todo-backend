@@ -17,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -66,7 +67,7 @@ public class TodoApp {
     @Bean
     public CommandLineRunner populateWeek(TodoRepository todoRepository, UserRepository userRepository, WordRepository wordRepository) {
         // Populates db with couple todos
-        return (args) -> {
+        return (String... args) -> {
             String[] entries = {"Wash dishes", "See doctor", "Take out garbage", "Walk the dog",
                     "Study stuff", "Be smart", "Don't die", "Pay rent", "Upgrade lives of other people"};
             String[] logins = {"johnny", "ben", "einstein"};
@@ -90,13 +91,8 @@ public class TodoApp {
                 List<String> kws = Arrays.asList("Word", "Second word");
                 keywords.setWords(kws.stream()
                         .map(s -> {
-                            Word f = wordRepository.findOneByWordStr(s);
-                            if(f == null) {
-                                return wordRepository.save(new Word(s));
-                            }
-                            else {
-                                return f;
-                            }
+                            Word f = wordRepository.findOneByWordStr(s).orElseGet(() -> wordRepository.save(new Word(s)));
+                            return f;
                         })
                         .collect(Collectors.toSet()));
                 keywords.setTodo(todo);
