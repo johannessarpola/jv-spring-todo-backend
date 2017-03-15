@@ -29,7 +29,7 @@ public class KeywordCollector implements Collector<String, Set<Word>, Word> {
         return (a, b) -> {
             a.addAll(b);
             return a;
-        }
+        };
     }
 
     @Override
