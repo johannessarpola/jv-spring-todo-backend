@@ -8,10 +8,13 @@ import fi.johannes.dto.TodoCreationForm;
 import fi.johannes.serialization.CustomDateDeserializer;
 import fi.johannes.serialization.CustomDateSerializer;
 import fi.johannes.util.DateUtils;
+import fi.johannes.util.collectors.KeywordCollector;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -91,21 +94,6 @@ public class Todo {
 	public void setCreated(LocalDateTime created) {
 		this.created = created;
 	}
-	public static Todo fromForm(TodoCreationForm todoCreationForm, User creator){
-		Todo todo = new Todo();
-		todo.setCreated(LocalDateTime.now());
-		todo.setDeadline(DateUtils.stringToLocalDateTime(todoCreationForm.getDeadline()));
-		todo.setEntry(todoCreationForm.getEntry());
-		todo.setKeywords(createKeywordsFromArr(todoCreationForm.getKeywords(), todo));
-        todo.setDone(todoCreationForm.getDone());
-        return todo;
-	}
-    private static Keywords createKeywordsFromArr(String[] arr, Todo parent){
-        Set<Word> strings = Stream.of(arr).filter(getValueNotNullOrEmptyStringsPredicate()).map(Word::new).collect(Collectors.toSet());
-        Keywords keywords = new Keywords();
-        keywords.setWords(strings);
-        keywords.setTodo(parent);
-        return keywords;
-	}
+
 
 }

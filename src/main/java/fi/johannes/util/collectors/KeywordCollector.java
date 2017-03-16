@@ -3,6 +3,7 @@ package fi.johannes.util.collectors;
 import fi.johannes.models.Word;
 import fi.johannes.services.repositories.WordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.EnumSet;
@@ -16,6 +17,7 @@ import java.util.stream.Collector;
 /**
  * johanness on 15/03/2017.
  */
+@Component
 public class KeywordCollector {
 
     private WordRepository wordRepository;
@@ -38,10 +40,13 @@ public class KeywordCollector {
     public Collector<String, HashSet<Word>, HashSet<Word>> getCollector(){
         return new CollectorImpl<>(supplier, accumulator, combiner, finisher, Collections.emptySet());
     }
-
-    private EnumSet<Collector.Characteristics> getDefParallelCollection(){
+    public Collector<String, HashSet<Word>, HashSet<Word>> getParallelCollector(){
+        return new CollectorImpl<>(supplier, accumulator, combiner, finisher, parallelConf());
+    }
+    private EnumSet<Collector.Characteristics> parallelConf(){
         return EnumSet.of(
                 Collector.Characteristics.CONCURRENT,
                 Collector.Characteristics.IDENTITY_FINISH);
     }
+
 }
