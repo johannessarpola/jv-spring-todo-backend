@@ -6,6 +6,7 @@ import fi.johannes.models.Todo;
 import fi.johannes.models.User;
 import fi.johannes.services.impl.UsersServiceImpl;
 import fi.johannes.services.interfaces.TodoService;
+import fi.johannes.util.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,9 +25,6 @@ public class TodoApiController {
     private final TodoService todoService;
     private final UsersServiceImpl userService;
 
-    // TODO This needs to be stored somewhere
-    private User todoUser;
-
     @Autowired
     public TodoApiController(UsersServiceImpl userService, TodoService todoService) {
         this.userService = userService;
@@ -36,7 +34,6 @@ public class TodoApiController {
     @PreAuthorize("@currentUserServiceImpl.canAccessUser(principal, #id)")
     @RequestMapping(path = "/store/single", method = RequestMethod.POST)
     public ResponseEntity<Todo> storeTodo(@RequestBody TodoCreationForm form) {
-        // TODO Authentication
         if (form != null) {
             Todo stored = todoService.store(form);
             return ResponseEntity.ok(stored);
@@ -48,7 +45,6 @@ public class TodoApiController {
     @PreAuthorize("@currentUserServiceImpl.canAccessUser(principal, #id)")
     @RequestMapping(path = "/store/multiple", method = RequestMethod.POST)
     public ResponseEntity<List<Todo>> storeTodos(@RequestBody TodoCreationForm[] forms) {
-        // TODO Authentication
         if (forms != null) {
             List<Todo> todosList = new ArrayList<>();
             Arrays.stream(forms).forEach(todo -> todosList.add(todoService.store(todo)));
@@ -77,7 +73,7 @@ public class TodoApiController {
     @PreAuthorize("@currentUserServiceImpl.canAccessUser(principal, #id)")
     @RequestMapping(path = "/todos", method = RequestMethod.POST)
     public List<Todo> getTodos(@RequestParam(name = "num", defaultValue = 10 + "", required = false) Integer number) {
-        return todoService.getLatest(number, todoUser);
+        return todoService.getLatest(number, UserUtils.getCustomUser());
     }
 
     @PreAuthorize("@currentUserServiceImpl.canAccessUser(principal, #id)")

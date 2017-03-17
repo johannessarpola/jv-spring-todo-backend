@@ -2,6 +2,7 @@ package fi.johannes.services.impl;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collector;
@@ -47,32 +48,26 @@ public class TodoServiceImpl implements fi.johannes.services.interfaces.TodoServ
         return todo;
     }
 
-    /* (non-Javadoc)
-     * @see fi.johannes.services.interfaces.TodoService#todosForUser(fi.johannes.services.User)
-     */
+
     @Override
     public List<Todo> todosForUser(User todoUser) {
         List<Todo> todos = todoRepository.findByCreator(todoUser);
         if (todos == null || todos.isEmpty()) {
-            return new ArrayList<Todo>();
+            return Collections.emptyList();
         } else {
             return todos;
         }
     }
 
-    /* (non-Javadoc)
-     * @see fi.johannes.services.interfaces.TodoService#allTodos()
-     */
+
     @Override
     public List<Todo> allTodos() {
-        return (List<Todo>) todoRepository.findAll();
+        return todoRepository.findAll();
     }
 
     @Override
     public List<Todo> getLatest(Integer number, User todoUser) {
-        long lastid = todoRepository.count();
-        long neg = lastid - number.longValue();
-        List<Todo> todos = todoRepository.findByIdGreaterThanEqual(neg, todoUser);
+        List<Todo> todos = todoRepository.findLast10ByUser(todoUser);
         return todos;
     }
 

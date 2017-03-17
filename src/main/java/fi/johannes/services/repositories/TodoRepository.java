@@ -9,10 +9,10 @@ import java.util.List;
 
 public interface TodoRepository extends JpaRepository<Todo, Long> {
 
-	// Pretty fancy
-	public List<Todo> findByCreator(User todoUser);
-	public List<Todo> findByDeadline(LocalDateTime deadline, User todoUser);
-	public List<Todo> findByDeadlineBetweenAndCreator(LocalDateTime first, LocalDateTime second, User todoUser);
-	public List<Todo> findByIdGreaterThanEqual(long id, User todoUser);
-	public Todo findById(long id);
+	List<Todo> findLast10ByUser(User user);
+	List<Todo> findByCreator(User todoUser);
+	List<Todo> findByDeadline(LocalDateTime deadline, User todoUser);
+	List<Todo> findByDeadlineBetweenAndCreator(LocalDateTime first, LocalDateTime second, User todoUser);
+	List<Todo> findByIdGreaterThanEqual(long id, User todoUser);
+	Todo findById(long id);
 }
