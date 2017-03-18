@@ -8,9 +8,12 @@ import lombok.Data;
 @Data
 public class TodoCreationForm {
 
-    String entry;
-    String deadline;
-    Boolean done;
-    String[] keywords;
+    private String entry;
+    private String deadline;
+    private Boolean done;
+    private String[] keywords;
 
+    public boolean isValid(){
+        return entry != null && !entry.isEmpty() && deadline != null && !deadline.isEmpty();
+    }
 }

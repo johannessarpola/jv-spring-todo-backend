@@ -7,15 +7,15 @@ import fi.johannes.models.User;
 import fi.johannes.services.impl.UsersServiceImpl;
 import fi.johannes.services.interfaces.TodoService;
 import fi.johannes.util.UserUtils;
+import fi.johannes.util.runnables.DoSaveTodos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.Option;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.Callable;
 
 
 @RestController
@@ -31,25 +31,14 @@ public class TodoApiController {
         this.todoService = todoService;
     }
 
-    @RequestMapping(path = "/store/single", method = RequestMethod.POST)
-    public ResponseEntity<Todo> storeTodo(@RequestBody TodoCreationForm form) {
-        if (form != null) {
-            Todo stored = todoService.store(form);
-            return ResponseEntity.ok(stored);
-        } else {
-            return ResponseEntity.badRequest().body(new Todo());
-        }
-    }
-
-    @RequestMapping(path = "/store/multiple", method = RequestMethod.POST)
-    public ResponseEntity<List<Todo>> storeTodos(@RequestBody TodoCreationForm[] forms) {
-        if (forms != null) {
-            List<Todo> todosList = new ArrayList<>();
-            Arrays.stream(forms).forEach(todo -> todosList.add(todoService.store(todo)));
-            return ResponseEntity.ok(todosList);
-        } else {
-            return ResponseEntity.badRequest().body(null);
-        }
+    @RequestMapping(path = "/save", method = RequestMethod.POST)
+    public Callable<Optional<List<Todo>>> storeTodos(@RequestBody List<TodoCreationForm> forms) {
+        DoSaveTodos saveTodos = new DoSaveTodos(todoService);
+        return () -> {
+            saveTodos.addForms(forms).run();
+            saveTodos.wait();
+            return Optional.of(saveTodos.getSaved());
+        };
     }
 
     @RequestMapping(path = "/today", method = RequestMethod.POST)
