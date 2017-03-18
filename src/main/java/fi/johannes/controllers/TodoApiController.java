@@ -31,7 +31,7 @@ public class TodoApiController {
         this.todoService = todoService;
     }
 
-    @PreAuthorize("@currentUserServiceImpl.canAccessUser(principal, #id)")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(path = "/store/single", method = RequestMethod.POST)
     public ResponseEntity<Todo> storeTodo(@RequestBody TodoCreationForm form) {
         if (form != null) {
@@ -42,7 +42,7 @@ public class TodoApiController {
         }
     }
 
-    @PreAuthorize("@currentUserServiceImpl.canAccessUser(principal, #id)")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(path = "/store/multiple", method = RequestMethod.POST)
     public ResponseEntity<List<Todo>> storeTodos(@RequestBody TodoCreationForm[] forms) {
         if (forms != null) {
@@ -54,14 +54,14 @@ public class TodoApiController {
         }
     }
 
-    @PreAuthorize("@currentUserServiceImpl.canAccessUser(principal, #id)")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(path = "/today", method = RequestMethod.POST)
     public Todos getToDueToday(Principal principal) {
         User todoUser = userService.getUserByLogin(principal.getName()).get(); // FIXME
         return new Todos(todoService.getTodoDueToday(todoUser));
     }
 
-    @PreAuthorize("@currentUserServiceImpl.canAccessUser(principal, #id)")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(path = "/week", method = RequestMethod.GET)
     public Todos getToDueCurrentWeek(@RequestParam(name = "num", defaultValue = 10 + "", required = false) Integer number, Principal principal) {
         User todoUser = userService.getUserByLogin(principal.getName()).get(); // FIXME
@@ -70,19 +70,19 @@ public class TodoApiController {
         return todos;
     }
 
-    @PreAuthorize("@currentUserServiceImpl.canAccessUser(principal, #id)")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(path = "/todos", method = RequestMethod.POST)
     public List<Todo> getTodos(@RequestParam(name = "num", defaultValue = 10 + "", required = false) Integer number) {
         return todoService.getLatest(number, UserUtils.getCustomUser());
     }
 
-    @PreAuthorize("@currentUserServiceImpl.canAccessUser(principal, #id)")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(path = "/all", method = RequestMethod.GET)
     public List<Todo> getTodos() {
         return todoService.allTodos();
     }
 
-    @PreAuthorize("@currentUserServiceImpl.canAccessUser(principal, #id)")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(path = "/update", method = RequestMethod.POST)
     public Todo update(@RequestBody Todo todo) {
         Todo updated = todoService.update(todo);
