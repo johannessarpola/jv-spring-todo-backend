@@ -28,8 +28,9 @@ public class Todo {
 	@GeneratedValue
 	@JsonIgnore
 	long id;
-	
-	@ManyToOne
+
+	// TODO Add custom serializer for this so that only username & id is given to front
+	@ManyToOne(optional = false)
 	User creator;
 	
 	String entry;
@@ -43,8 +44,8 @@ public class Todo {
 	LocalDateTime deadline;
 
 	Boolean done;
-	
-	@OneToOne(cascade = CascadeType.ALL)
+
+	@OneToOne(optional = true, cascade = CascadeType.ALL)
 	Keywords keywords;
 	
 	public Keywords getKeywords() {

@@ -2,6 +2,8 @@ package fi.johannes.dto;
 
 import lombok.Data;
 
+import java.util.Optional;
+
 /**
  * johanness on 07/03/2017.
  */
@@ -15,5 +17,8 @@ public class TodoCreationForm {
 
     public boolean isValid(){
         return entry != null && !entry.isEmpty() && deadline != null && !deadline.isEmpty();
+    }
+    public Optional<String[]> getKeywords(){
+        return Optional.ofNullable(keywords);
     }
 }

@@ -95,7 +95,6 @@ public class TodoApp {
                             return f;
                         })
                         .collect(Collectors.toSet()));
-                keywords.setTodo(todo);
                 todo.setKeywords(keywords);
 
                 todoRepository.save(todo);
