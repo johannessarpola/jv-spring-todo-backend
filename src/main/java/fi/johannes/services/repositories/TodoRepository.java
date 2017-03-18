@@ -3,10 +3,12 @@ package fi.johannes.services.repositories;
 import fi.johannes.models.Todo;
 import fi.johannes.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Repository
 public interface TodoRepository extends JpaRepository<Todo, Long> {
 
 	List<Todo> findLast10ByUser(User user);
