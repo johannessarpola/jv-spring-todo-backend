@@ -2,6 +2,8 @@ package fi.johannes.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import fi.johannes.common.Strings;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -32,6 +34,7 @@ public class User {
     @ElementCollection(targetClass = Role.class)
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "roles", nullable = false)
+    @Fetch(FetchMode.JOIN)
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 

@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface TodoRepository extends JpaRepository<Todo, Long> {
 
-	List<Todo> findLast10ByUser(User user);
+	List<Todo> findLast10ByCreator(User creator);
 	List<Todo> findByCreator(User todoUser);
 	List<Todo> findByDeadline(LocalDateTime deadline, User todoUser);
 	List<Todo> findByDeadlineBetweenAndCreator(LocalDateTime first, LocalDateTime second, User todoUser);

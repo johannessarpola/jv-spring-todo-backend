@@ -1,10 +1,7 @@
 package fi.johannes.services.impl;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 
@@ -62,12 +59,13 @@ public class TodoServiceImpl implements fi.johannes.services.interfaces.TodoServ
 
     @Override
     public List<Todo> allTodos() {
-        return todoRepository.findAll();
+        List<Todo> all = todoRepository.findAll();
+        return all;
     }
 
     @Override
     public List<Todo> getLatest(Integer number, User todoUser) {
-        List<Todo> todos = todoRepository.findLast10ByUser(todoUser);
+        List<Todo> todos = todoRepository.findLast10ByCreator(todoUser);
         return todos;
     }
 
@@ -95,10 +93,13 @@ public class TodoServiceImpl implements fi.johannes.services.interfaces.TodoServ
 
     public Todo fromForm(TodoCreationForm todoCreationForm, User creator) {
         Todo todo = new Todo();
+        todo.setCreator(creator);
         todo.setCreated(LocalDateTime.now());
         todo.setDeadline(DateUtils.stringToLocalDateTime(todoCreationForm.getDeadline()));
         todo.setEntry(todoCreationForm.getEntry());
-        todo.setKeywords(createKeywordsFromArr(todoCreationForm.getKeywords()));
+        if(todoCreationForm.getKeywords().isPresent()) {
+            todo.setKeywords(createKeywordsFromArr(todoCreationForm.getKeywords().get()));
+        }
         todo.setDone(todoCreationForm.getDone());
         return todo;
     }
@@ -109,5 +110,6 @@ public class TodoServiceImpl implements fi.johannes.services.interfaces.TodoServ
         Keywords keywords = new Keywords();
         keywords.setWords(Stream.of(arr).collect(wordCollector));
         return keywords;
+
     }
 }
