@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class DoSaveTodos implements Runnable {
     final private TodoService todoService;
 
     private Collection<TodoCreationForm> forms;
-    private List<Todo> saved;
+    private List<Todo> saved = new ArrayList<>();
 
     @Autowired
     public DoSaveTodos(TodoService todoService) {

@@ -9,12 +9,11 @@ import fi.johannes.services.interfaces.TodoService;
 import fi.johannes.util.UserUtils;
 import fi.johannes.util.runnables.DoSaveTodos;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.Option;
 import java.security.Principal;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Callable;
 
 
@@ -32,12 +31,12 @@ public class TodoApiController {
     }
 
     @RequestMapping(path = "/save", method = RequestMethod.POST)
-    public Callable<Optional<List<Todo>>> storeTodos(@RequestBody List<TodoCreationForm> forms) {
+    public Callable<Todos> storeTodos(@RequestBody List<TodoCreationForm> forms) {
         DoSaveTodos saveTodos = new DoSaveTodos(todoService);
         return () -> {
+            // TODO Add custom deserializer for Optional so we can return it
             saveTodos.addForms(forms).run();
-            saveTodos.wait();
-            return Optional.of(saveTodos.getSaved());
+            return new Todos(saveTodos.getSaved());
         };
     }
 
@@ -61,8 +60,8 @@ public class TodoApiController {
     }
 
     @RequestMapping(path = "/all", method = RequestMethod.GET)
-    public List<Todo> getTodos() {
-        return todoService.allTodos();
+    public Todos getTodos() {
+        return new Todos(todoService.allTodos());
     }
 
     @RequestMapping(path = "/update", method = RequestMethod.POST)
