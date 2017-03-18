@@ -21,6 +21,6 @@ public interface TodoService {
 
 	Todo update(Todo todo);
 
-	Todo store(TodoCreationForm todo);
+	Todo save(TodoCreationForm todo);
 
 }
