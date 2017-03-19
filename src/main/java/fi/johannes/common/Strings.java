@@ -6,4 +6,5 @@ package fi.johannes.common;
 public class Strings {
     // TODO Move this to i18 someday
     public static String emptyTextField = "Undefined";
+    public static String defaultRolePrefix = "ROLE_";
 }

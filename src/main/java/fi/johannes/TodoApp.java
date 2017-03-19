@@ -76,7 +76,7 @@ public class TodoApp {
             Random random = new Random(123L);
             for (int i = 0; i < 10; i++) {
                 Todo todo = new Todo();
-                User todoUser = userRepository.findOneByLogin("johannes");
+                User todoUser = userRepository.findOneByLogin("johannes").orElseThrow(NullPointerException::new);
                 int entryindex = random.nextInt(entries.length);
                 LocalDateTime now = LocalDateTime.now().withHour(6);
                 int secondstoadd = random.nextInt(7 * 24 * 60 * 60);

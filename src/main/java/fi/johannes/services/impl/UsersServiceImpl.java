@@ -33,12 +33,12 @@ public class UsersServiceImpl implements UserService {
 
     @Override
     public Optional<User> getUserByEmail(String email) {
-        return Optional.ofNullable(userRepository.findOneByEmail(email));
+        return userRepository.findOneByEmail(email);
     }
 
     @Override
     public Optional<User> getUserByLogin(String login) {
-        return Optional.ofNullable(userRepository.findOneByLogin(login));
+        return userRepository.findOneByLogin(login);
     }
 
     @Override
