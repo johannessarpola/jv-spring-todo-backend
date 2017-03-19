@@ -1,34 +1,33 @@
-package fi.johannes.controllers;
+package fi.johannes.controllers.admin;
 
 import fi.johannes.dto.UserCreateForm;
 import fi.johannes.dto.validation.UserCreateFormValidator;
-import fi.johannes.models.User;
 import fi.johannes.services.interfaces.UserService;
-import fi.johannes.util.UserUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
 import javax.validation.Valid;
 import java.util.NoSuchElementException;
 
 @Controller
-@RequestMapping("/user")
-public class UserController {
+@PreAuthorize("hasAuthority('ADMIN') || hasAuthority('SUPER_ADMIN')")
+@RequestMapping("/admin")
+public class AdminController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AdminController.class);
     private final UserService userService;
     private final UserCreateFormValidator userCreateFormValidator;
 
     @Autowired
-    public UserController(UserService userService, UserCreateFormValidator userCreateFormValidator) {
+    public AdminController(UserService userService, UserCreateFormValidator userCreateFormValidator) {
         this.userService = userService;
         this.userCreateFormValidator = userCreateFormValidator;
     }
@@ -38,7 +37,6 @@ public class UserController {
         binder.addValidators(userCreateFormValidator);
     }
 
-    @PreAuthorize("@currentUserServiceImpl.canAccessUser(principal, #id)")
     @RequestMapping("/{id}/")
     public ModelAndView getUserPage(@PathVariable Long id) {
         LOGGER.debug("Getting user page for user={}", id);
@@ -46,45 +44,31 @@ public class UserController {
                 .orElseThrow(() -> new NoSuchElementException(String.format("User=%s not found", id))));
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/create/", method = RequestMethod.GET)
     public ModelAndView getUserCreatePage() {
         LOGGER.debug("Getting user create form");
         return new ModelAndView("user_create", "form", new UserCreateForm());
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/create/", method = RequestMethod.POST)
     public String handleUserCreateForm(@Valid @ModelAttribute("form") UserCreateForm form, BindingResult bindingResult) {
         LOGGER.debug("Processing user create form={}, bindingResult={}", form, bindingResult);
         if (bindingResult.hasErrors()) {
-            // failed validation
             return "user_create";
         }
         try {
             userService.create(form);
         } catch (DataIntegrityViolationException e) {
-            // probably email already exists - very rare case when multiple admins are adding same user
-            // at the same time and form validation has passed for more than one of them.
             LOGGER.warn("Exception occurred when trying to save the user, assuming duplicate email", e);
             bindingResult.reject("email.exists", "Email already exists");
             return "user_create";
         }
-        // ok, redirect
         return "redirect:/users";
     }
-    @RequestMapping(value = "/me/", method = RequestMethod.GET)
-    public ModelAndView getProfile() {
-        User currentUser = UserUtils.getCustomUser();
-        ModelAndView mav = new ModelAndView("user", "user", currentUser);
-        return mav;
-    }
-    @RequestMapping(value = "/me2/", method = RequestMethod.GET)
-    public ModelAndView getProfile2() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        boolean ldap = UserUtils.isLdapAuthenticated();
-        ModelAndView mav = new ModelAndView("user", "user", principal);
-        return mav;
+
+    @RequestMapping("/users")
+    public ModelAndView getUsersPage() {
+        return new ModelAndView("users", "users", userService.getAllUsers());
     }
 
 }
