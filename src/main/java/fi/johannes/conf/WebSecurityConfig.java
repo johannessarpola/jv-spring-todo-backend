@@ -75,38 +75,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        /*auth
-                .ldapAuthentication()
-                .userDetailsContextMapper(userDetailsContextMapper())
-                .userDnPatterns("uid={0},ou=people")
-                .groupSearchBase("ou=groups")
-                .contextSource()
-                .ldif("classpath:test-server.ldif");
-        auth
-                .ldapAuthentication()
-                .userDetailsContextMapper(userDetailsContextMapper())
-                .userSearchFilter("uid={0}")
-                .contextSource()
-                .url("ldap://ldap.forumsys.com:389/dc=example,dc=com")
-                .managerDn("cn=read-only-admin,dc=example,dc=com")
-                .managerPassword("password");*/
         auth
                 .userDetailsService(userDetailsService)
                 .passwordEncoder(new BCryptPasswordEncoder());
-
-
     }
 
-    @Bean
-    public UserDetailsContextMapper userDetailsContextMapper() {
-        // TODO This is not working so find a way to make it happen maybe
-        // http://stackoverflow.com/questions/35481427/ldap-authentication-with-roles-from-database-in-spring-boot-jhipster
-        return new LdapUserDetailsMapper() {
-            @Override
-            public UserDetails mapUserFromContext(DirContextOperations ctx, String username, Collection<? extends GrantedAuthority> authorities) {
-                UserDetails details = super.mapUserFromContext(ctx, username, authorities);
-                return CustomUserDetails.buildWithLdap((LdapUserDetails) details);
-            }
-        };
-    }
 }

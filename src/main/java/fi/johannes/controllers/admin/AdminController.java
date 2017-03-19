@@ -18,7 +18,6 @@ import javax.validation.Valid;
 import java.util.NoSuchElementException;
 
 @Controller
-@PreAuthorize("hasAuthority('ADMIN') || hasAuthority('SUPER_ADMIN')")
 @RequestMapping("/admin")
 public class AdminController {
 

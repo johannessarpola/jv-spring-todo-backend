@@ -37,14 +37,4 @@ public class CustomUserDetails extends org.springframework.security.core.userdet
                 "} " + super.toString();
     }
 
-    public static UserDetails buildWithLdap(LdapUserDetails details) {
-        User user = new User();
-        user.setLogin(details.getUsername());
-        // FIXME Problem here is that the password should not exist in the ldap auth and thus it will be null always
-        // TODO For this reason it's required to store the authentication details in separate than user and just have the common
-        // info's for each user in some interfaced struct. This is the used to check if a username exists and if it does then use it.
-        user.setPasswordHash(details.getPassword());
-        user.addRole(Role.USER);
-        return new CustomUserDetails(user);
-    }
 }
