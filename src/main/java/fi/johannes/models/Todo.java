@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import fi.johannes.dto.TodoCreationForm;
 import fi.johannes.serialization.CustomDateDeserializer;
 import fi.johannes.serialization.CustomDateSerializer;
+import fi.johannes.serialization.CustomKeywordsSerializer;
+import fi.johannes.serialization.CustomUserSerializer;
 import fi.johannes.util.DateUtils;
 import fi.johannes.util.collectors.KeywordCollector;
 
@@ -27,26 +29,26 @@ public class Todo {
 	@Id
 	@GeneratedValue
 	@JsonIgnore
-	long id;
+    private long id;
 
-	// TODO Add custom serializer for this so that only username & id is given to front
+    @JsonSerialize(using = CustomUserSerializer.class)
 	@ManyToOne(optional = false)
-	User creator;
-	
-	String entry;
+    private User creator;
+    private String entry;
 
 	@JsonDeserialize(using = CustomDateDeserializer.class)
 	@JsonSerialize(using = CustomDateSerializer.class)
-	LocalDateTime created;
+    private LocalDateTime created;
 
 	@JsonDeserialize(using = CustomDateDeserializer.class)
 	@JsonSerialize(using = CustomDateSerializer.class)
-	LocalDateTime deadline;
+    private LocalDateTime deadline;
 
-	Boolean done;
+    private Boolean done;
 
+	@JsonSerialize(using = CustomKeywordsSerializer.class)
 	@OneToOne(optional = true, cascade = CascadeType.ALL)
-	Keywords keywords;
+    private Keywords keywords;
 	
 	public Keywords getKeywords() {
 		return keywords;
